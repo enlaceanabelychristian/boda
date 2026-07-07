@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boda Anabel & Christian</title>
+  <meta name="description" content="Web de la boda de Anabel y Christian" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="hero">
+    <nav class="nav">
+      <div class="brand">A & C</div>
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#inicio">Inicio</a>
+        <a href="#historia">Historia</a>
+        <a href="#evento">Evento</a>
+        <a href="#confirmar">Confirmar</a>
+      </div>
+    </nav>
+
+    <section id="inicio" class="hero-content">
+      <p class="overline">Nos casamos</p>
+      <h1>Anabel & Christian</h1>
+      <p class="date">Sábado, 31 de octubre de 2026</p>
+      <div class="countdown" id="countdown">
+        <div><strong id="days">00</strong><span>Días</span></div>
+        <div><strong id="hours">00</strong><span>Horas</span></div>
+        <div><strong id="minutes">00</strong><span>Min</span></div>
+        <div><strong id="seconds">00</strong><span>Seg</span></div>
+      </div>
+      <a class="btn" href="#confirmar">Confirmar asistencia</a>
+    </section>
+  </header>
+
+  <main>
+    <section id="historia" class="section">
+      <p class="overline">Nuestra historia</p>
+      <h2>El comienzo de un nuevo capítulo</h2>
+      <p>
+        Queremos compartir este día tan especial con las personas que más queremos.
+        Será una celebración llena de emoción, alegría, música y muchos momentos para recordar.
+      </p>
+    </section>
+
+    <section id="evento" class="section cards">
+      <div class="card">
+        <span class="icon">💒</span>
+        <h3>Ceremonia</h3>
+        <p><strong>Hora:</strong> 18:00 h</p>
+        <p><strong>Lugar:</strong> Iglesia / lugar pendiente</p>
+      </div>
+
+      <div class="card">
+        <span class="icon">🥂</span>
+        <h3>Celebración</h3>
+        <p><strong>Hora:</strong> 20:00 h</p>
+        <p><strong>Lugar:</strong> Salón / finca pendiente</p>
+      </div>
+
+      <div class="card">
+        <span class="icon">🎁</span>
+        <h3>Regalo</h3>
+        <p>Lo más importante es que nos acompañes. Si quieres tener un detalle, puedes consultarnos.</p>
+      </div>
+    </section>
+
+    <section class="section details">
+      <h2>Información importante</h2>
+      <div class="details-grid">
+        <div>
+          <h3>Dress code</h3>
+          <p>Elegante / formal.</p>
+        </div>
+        <div>
+          <h3>Alojamiento</h3>
+          <p>Próximamente añadiremos recomendaciones cercanas.</p>
+        </div>
+        <div>
+          <h3>Ubicación</h3>
+          <p>Añadiremos el mapa cuando esté confirmado el lugar exacto.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="confirmar" class="section rsvp">
+      <p class="overline">RSVP</p>
+      <h2>Confirma tu asistencia</h2>
+      <p>
+        Escríbenos por WhatsApp para confirmar si podrás acompañarnos en nuestro gran día.
+      </p>
+      <a class="btn btn-dark" href="https://wa.me/34600000000?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Anabel%20y%20Christian" target="_blank" rel="noopener">
+        Confirmar por WhatsApp
+      </a>
+      <p class="small">Cambia el número de teléfono en el archivo <strong>index.html</strong>.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Con cariño, Anabel & Christian</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -166,4 +166,25 @@ function enviarConfirmacionJSONP(payload) {
     document.body.appendChild(script);
   });
 }
+const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
 
+if (bgMusic && musicBtn) {
+  bgMusic.volume = 0.35;
+
+  musicBtn.addEventListener("click", async () => {
+    if (bgMusic.paused) {
+      try {
+        await bgMusic.play();
+        musicBtn.classList.add("playing");
+        musicBtn.textContent = "❚❚";
+      } catch (error) {
+        console.log("El navegador bloqueó la reproducción automática.");
+      }
+    } else {
+      bgMusic.pause();
+      musicBtn.classList.remove("playing");
+      musicBtn.textContent = "♫";
+    }
+  });
+}

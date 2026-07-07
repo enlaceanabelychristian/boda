@@ -580,3 +580,38 @@ footer p {
 .modal-btn-close:hover {
   color: var(--texto);
 }
+.music-btn {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(199, 161, 90, .45);
+  background: rgba(255, 250, 248, .92);
+  color: #c7a15a;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 16px 40px rgba(151, 104, 93, .18);
+}
+
+.music-btn.playing {
+  background: #c7a15a;
+  color: white;
+}
+
+.music-btn::after {
+  content: "Música";
+  position: absolute;
+  right: 62px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  color: #776b66;
+  font-size: 12px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(199, 161, 90, .22);
+  white-space: nowrap;
+}

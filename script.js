@@ -124,3 +124,31 @@ if (form) {
     }
   });
 }
+function enviarConfirmacionJSONP(payload) {
+  return new Promise((resolve, reject) => {
+    const callbackName = "rsvpCallback_" + Date.now();
+
+    window[callbackName] = function(response) {
+      resolve(response);
+      delete window[callbackName];
+      script.remove();
+    };
+
+    const script = document.createElement("script");
+
+    const params = new URLSearchParams({
+      callback: callbackName,
+      data: JSON.stringify(payload)
+    });
+
+    script.src = window.RSVP_ENDPOINT + "?" + params.toString();
+
+    script.onerror = function() {
+      delete window[callbackName];
+      script.remove();
+      reject(new Error("Error conectando con Google Sheets."));
+    };
+
+    document.body.appendChild(script);
+  });
+}

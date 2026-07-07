@@ -70,7 +70,7 @@
       <h3>Ceremonia</h3>
       <p><strong>Hora:</strong> 11:30</p>
       <p><strong>Lugar:</strong> Iglesia Ntra. Sra. del Carmen</p>
-      <p> Gibraleon</p>
+      <p> Gibraleón</p>
     </article>
 
     <article class="card">
@@ -120,11 +120,6 @@
               <input type="tel" name="telefono" placeholder="Tu número de teléfono (Ej: 600123456)">
             </label>
 
-            <label class="full">
-              Acompañante
-              <input type="text" name="acompanante" placeholder="Nombre y apellidos del acompañante, si procede">
-            </label>
-
             <label>
               Adultos *
               <input type="number" name="adultos" id="adultos" min="1" value="1">
@@ -146,8 +141,14 @@
 
             <label class="full">
               Alergias o intolerancias
-              <textarea name="alergias" rows="4" placeholder="Indica allergies, intolerancias o escribe Ninguna"></textarea>
+              <textarea name="alergias" rows="4" placeholder="Indica alergias, intolerancias o escribe Ninguna"></textarea>
             </label>
+
+            <div class="full" id="calendarBtnContainer" style="text-align: center; margin-top: 15px;">
+              <a id="googleCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Anabel+%26+Christian&dates=20261031T103000Z/20261031T223000Z&details=%C2%A1Asistencia+confirmada!+Prepara+tu+mejor+vestimenta+para+acompa%C3%B1ar+a+Anabel+y+Christian+en+su+gran+d%C3%ADa.&location=Iglesia+Ntra.+Sra.+del+Carmen,+Gibraleon" target="_blank" class="btn" style="background: linear-gradient(135deg, var(--dorado-suave) 0%, var(--dorado) 100%); color: #3a302d; font-size: 14px; box-shadow: 0 8px 24px rgba(199,161,90,0.4);">
+                📅 Añadir evento al calendario
+              </a>
+            </div>
           </div>
         </div>
 

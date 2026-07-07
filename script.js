@@ -148,6 +148,27 @@ function enviarConfirmacionJSONP(payload) {
 
     const script = document.createElement("script");
 
+    // Añadimos un timestamp (_t) para romper la caché del navegador
+    const params = new URLSearchParams({
+      callback: callbackName,
+      data: JSON.stringify(payload),
+      _t: Date.now() 
+    });
+
+    script.src = window.RSVP_ENDPOINT + "?" + params.toString();
+
+    script.onerror = function() {
+      delete window[callbackName];
+      script.remove();
+      reject(new Error("Error conectando con Google Sheets."));
+    };
+
+    document.body.appendChild(script);
+  });
+}
+
+    const script = document.createElement("script");
+
     const params = new URLSearchParams({
       callback: callbackName,
       data: JSON.stringify(payload)

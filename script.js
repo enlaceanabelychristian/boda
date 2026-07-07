@@ -167,21 +167,3 @@ function enviarConfirmacionJSONP(payload) {
   });
 }
 
-    const script = document.createElement("script");
-
-    const params = new URLSearchParams({
-      callback: callbackName,
-      data: JSON.stringify(payload)
-    });
-
-    script.src = window.RSVP_ENDPOINT + "?" + params.toString();
-
-    script.onerror = function() {
-      delete window[callbackName];
-      script.remove();
-      reject(new Error("Error conectando con Google Sheets."));
-    };
-
-    document.body.appendChild(script);
-  });
-}

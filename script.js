@@ -37,9 +37,15 @@ const extraFields = document.getElementById("extraFields");
 const autobusSelect = document.getElementById("autobus");
 const formMessage = document.getElementById("formMessage");
 const submitBtn = document.getElementById("submitBtn");
+const calendarBtnContainer = document.getElementById("calendarBtnContainer");
 
 function toggleExtraFields() {
   const asiste = asisteSelect.value;
+  // Ocultamos el botón de calendario al cambiar la opción para asegurar un nuevo envío limpio
+  if (calendarBtnContainer) {
+    calendarBtnContainer.classList.add("hidden");
+  }
+  
   if (asiste === "No") {
     extraFields.classList.add("hidden");
     autobusSelect.required = false;
@@ -90,6 +96,7 @@ if (form) {
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
     showMessage("", "");
+    if (calendarBtnContainer) calendarBtnContainer.classList.add("hidden");
 
     try {
       const response = await enviarConfirmacionJSONP(payload);
@@ -102,12 +109,12 @@ if (form) {
       
       form.reset();
       
-      if (asiste === "Sí") {
-        asisteSelect.value = "Sí";
-        toggleExtraFields();
-      } else {
-        toggleExtraFields();
+      // SOLO si el usuario ha confirmado que SÍ asiste exitosamente, revelamos el botón dorado
+      if (asiste === "Sí" && calendarBtnContainer) {
+        calendarBtnContainer.classList.remove("hidden");
       }
+      
+      toggleExtraFields();
     } catch (error) {
       showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {

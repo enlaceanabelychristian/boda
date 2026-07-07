@@ -76,9 +76,7 @@ if (form) {
       nombre: String(formData.get("nombre") || "").trim(),
       apellidos: String(formData.get("apellidos") || "").trim(),
       asiste: asiste,
-      // Si asiste, guarda el teléfono; si no, lo deja vacío
       telefono: asiste === "Sí" ? String(formData.get("telefono") || "").trim() : "",
-      acompanante: asiste === "Sí" ? String(formData.get("acompanante") || "").trim() : "",
       adultos: asiste === "Sí" ? String(formData.get("adultos") || "").trim() : "",
       ninos: asiste === "Sí" ? String(formData.get("ninos") || "").trim() : "",
       alergias: asiste === "Sí" ? String(formData.get("alergias") || "").trim() : "",
@@ -110,16 +108,25 @@ if (form) {
     showMessage("", "");
 
     try {
-  const response = await enviarConfirmacionJSONP(payload);
+      const response = await enviarConfirmacionJSONP(payload);
 
-  if (!response.ok) {
-    throw new Error(response.error || "No se ha podido guardar la confirmación.");
-  }
+      if (!response.ok) {
+        throw new Error(response.error || "No se ha podido guardar la confirmación.");
+      }
 
-  showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
-  form.reset();
-  toggleExtraFields();
-} catch (error) {
+      showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
+      
+      // Reseteamos valores visuales sin romper la selección si decide añadir al calendario
+      form.reset();
+      
+      // Si el cliente asistía originalmente, dejamos el botón dorado visible un momento
+      if (asiste === "Sí") {
+        asisteSelect.value = "Sí";
+        toggleExtraFields();
+      } else {
+        toggleExtraFields();
+      }
+    } catch (error) {
       showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {
       submitBtn.disabled = false;
@@ -127,6 +134,7 @@ if (form) {
     }
   });
 }
+
 function enviarConfirmacionJSONP(payload) {
   return new Promise((resolve, reject) => {
     const callbackName = "rsvpCallback_" + Date.now();

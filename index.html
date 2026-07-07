@@ -138,16 +138,23 @@
 
         <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
         <p id="formMessage" class="form-message"></p>
-
-        <div class="full hidden" id="calendarBtnContainer" style="text-align: center; margin-top: 25px;">
-          <a id="googleCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Anabel+%26+Christian&dates=20261031T103000Z/20261031T223000Z&details=%C2%A1Asistencia+confirmada!+Prepara+tu+mejor+vestimenta+para+acompa%C3%B1ar+a+Anabel+y+Christian+en+su+gran+d%C3%ADa.&location=Iglesia+Ntra.+Sra.+del+Carmen,+Gibraleon" target="_blank" class="btn" style="background: linear-gradient(135deg, var(--dorado-suave) 0%, var(--dorado) 100%); color: #3a302d; font-size: 14px; box-shadow: 0 8px 24px rgba(199,161,90,0.4);">
-            📅 Añadir evento al calendario
-          </a>
-        </div>
       </form>
     </div>
   </section>
 </main>
+
+<div id="calendarModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h3>¡Asistencia Guardada!</h3>
+    <p>¿Deseas añadir este evento a tu calendario para no olvidar la fecha?</p>
+    <div class="modal-actions">
+      <a id="googleCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Anabel+%26+Christian&dates=20261031T103000Z/20261031T223000Z&details=%C2%A1Asistencia+confirmada!+Prepara+tu+mejor+vestimenta+para+acompa%C3%B1ar+a+Anabel+y+Christian+en+su+gran+d%C3%ADa.&location=Iglesia+Ntra.+Sra.+del+Carmen,+Gibraleon" target="_blank" class="btn modal-btn-gold">
+        📅 Añadir al Calendario
+      </a>
+      <button id="closeModalBtn" class="modal-btn-close">Ahora no</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>Anabel & Christian</p>

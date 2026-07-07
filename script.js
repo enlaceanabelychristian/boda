@@ -37,15 +37,14 @@ const extraFields = document.getElementById("extraFields");
 const autobusSelect = document.getElementById("autobus");
 const formMessage = document.getElementById("formMessage");
 const submitBtn = document.getElementById("submitBtn");
-const calendarBtnContainer = document.getElementById("calendarBtnContainer");
+
+// Elementos de la ventana emergente modal
+const calendarModal = document.getElementById("calendarModal");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const googleCalendarBtn = document.getElementById("googleCalendarBtn");
 
 function toggleExtraFields() {
   const asiste = asisteSelect.value;
-  // Ocultamos el botón de calendario al cambiar la opción para asegurar un nuevo envío limpio
-  if (calendarBtnContainer) {
-    calendarBtnContainer.classList.add("hidden");
-  }
-  
   if (asiste === "No") {
     extraFields.classList.add("hidden");
     autobusSelect.required = false;
@@ -63,6 +62,20 @@ if (asisteSelect) {
 function showMessage(text, type) {
   formMessage.textContent = text;
   formMessage.className = "form-message " + type;
+}
+
+// Lógica de cierre del aviso emergente
+if (closeModalBtn && calendarModal) {
+  closeModalBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    calendarModal.classList.add("hidden");
+  });
+}
+if (googleCalendarBtn && calendarModal) {
+  googleCalendarBtn.addEventListener("click", () => {
+    // Escondemos el aviso una vez hacen clic en agregar para no entorpecer
+    calendarModal.classList.add("hidden");
+  });
 }
 
 if (form) {
@@ -96,7 +109,6 @@ if (form) {
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
     showMessage("", "");
-    if (calendarBtnContainer) calendarBtnContainer.classList.add("hidden");
 
     try {
       const response = await enviarConfirmacionJSONP(payload);
@@ -108,13 +120,13 @@ if (form) {
       showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
       
       form.reset();
-      
-      // SOLO si el usuario ha confirmado que SÍ asiste exitosamente, revelamos el botón dorado
-      if (asiste === "Sí" && calendarBtnContainer) {
-        calendarBtnContainer.classList.remove("hidden");
-      }
-      
       toggleExtraFields();
+
+      // DISPARADOR: Si el cliente confirma que SÍ asiste con éxito, abrimos la ventana emergente modal
+      if (asiste === "Sí" && calendarModal) {
+        calendarModal.classList.remove("hidden");
+      }
+
     } catch (error) {
       showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {

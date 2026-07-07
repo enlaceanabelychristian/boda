@@ -166,21 +166,42 @@ function enviarConfirmacionJSONP(payload) {
     document.body.appendChild(script);
   });
 }
-const bgMusic = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
 
-if (bgMusic && musicBtn) {
-  bgMusic.volume = 0.35;
+const playlist = [
+  "musica%20(1).mp3",
+  "musica%20(2).mp3",
+  "musica%20(3).mp3",
+  "musica%20(4).mp3"
+];
 
+let currentTrack = 0;
+const bgMusic = new Audio(playlist[currentTrack]);
+bgMusic.volume = 0.5;
+
+function playTrack(index) {
+  bgMusic.src = playlist[index];
+  bgMusic.volume = 0.5;
+  bgMusic.play().catch(() => {
+    console.log("El navegador bloqueó el autoplay hasta que pulses el botón.");
+  });
+}
+
+bgMusic.addEventListener("ended", () => {
+  currentTrack = (currentTrack + 1) % playlist.length;
+  playTrack(currentTrack);
+});
+
+window.addEventListener("load", () => {
+  playTrack(currentTrack);
+});
+
+if (musicBtn) {
   musicBtn.addEventListener("click", async () => {
     if (bgMusic.paused) {
-      try {
-        await bgMusic.play();
-        musicBtn.classList.add("playing");
-        musicBtn.textContent = "❚❚";
-      } catch (error) {
-        console.log("El navegador bloqueó la reproducción automática.");
-      }
+      await bgMusic.play();
+      musicBtn.classList.add("playing");
+      musicBtn.textContent = "❚❚";
     } else {
       bgMusic.pause();
       musicBtn.classList.remove("playing");

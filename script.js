@@ -107,17 +107,16 @@ if (form) {
     showMessage("", "");
 
     try {
-      await fetch(window.RSVP_ENDPOINT, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
+  const response = await enviarConfirmacionJSONP(payload);
 
-      showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
-      form.reset();
-      toggleExtraFields();
-    } catch (error) {
+  if (!response.ok) {
+    throw new Error(response.error || "No se ha podido guardar la confirmación.");
+  }
+
+  showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
+  form.reset();
+  toggleExtraFields();
+} catch (error) {
       showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {
       submitBtn.disabled = false;

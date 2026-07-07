@@ -500,3 +500,83 @@ footer p {
     border-radius: 32px;
   }
 }
+/* ==========================================================================
+   9. VENTANA EMERGENTE (MODAL)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(58, 48, 45, 0.6); /* Fondo semi-transparente oscuro */
+  backdrop-filter: blur(5px); /* Desenfoque estético */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  padding: 34px 24px;
+  border-radius: 32px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 30px 90px rgba(151, 104, 93, 0.25);
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-content h3 {
+  font-family: "Parisienne", cursive;
+  font-size: 38px;
+  color: var(--texto);
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  color: var(--gris);
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-btn-gold {
+  background: linear-gradient(135deg, var(--dorado-suave) 0%, var(--dorado) 100%) !important;
+  color: #3a302d !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(199,161,90,0.3) !important;
+}
+
+.modal-btn-close {
+  background: transparent;
+  border: none;
+  color: var(--gris);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  padding: 8px;
+  font-weight: 500;
+}
+
+.modal-btn-close:hover {
+  color: var(--texto);
+}

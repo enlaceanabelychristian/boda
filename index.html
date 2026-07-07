@@ -1,6 +1,162 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Anabel & Christian</title><meta name="description" content="Web de la boda de Anabel y Christian"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"/></head><body>
-<header class="hero" id="inicio"><nav class="nav"><div class="brand">A & C</div><button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button><div class="nav-links" id="navLinks"><a href="#inicio">Inicio</a><a href="#historia">Historia</a><a href="#galeria">Fotos</a><a href="#evento">Evento</a><a href="#confirmar">Confirmar</a></div></nav><section class="hero-content"><p class="overline">Nuestra boda</p><h1>Anabel & Christian</h1><p class="date">Muy pronto celebraremos nuestro gran día</p><div class="signature-countdown" id="countdown"><div><strong id="days">00</strong><span>días</span></div><div><strong id="hours">00</strong><span>horas</span></div><div><strong id="minutes">00</strong><span>minutos</span></div><div><strong id="seconds">00</strong><span>segundos</span></div></div><a class="btn" href="#confirmar">Confirmar asistencia</a></section></header>
-<main><section id="historia" class="section intro"><p class="overline">Con mucho amor</p><h2>Queremos compartir este día contigo</h2><p>Hay momentos que se viven una sola vez, pero se recuerdan para siempre. Nos hace muchísima ilusión celebrar este día rodeados de nuestra familia y amigos.</p></section>
-<section id="galeria" class="section gallery-section"><p class="overline">Recuerdos</p><h2>Nuestra historia en imágenes</h2><p class="gallery-text">Hemos dejado estos espacios preparados para añadir vuestras fotos favoritas.</p><div class="gallery"><div class="photo-slot large"><span>Foto principal</span></div><div class="photo-slot"><span>Foto 2</span></div><div class="photo-slot"><span>Foto 3</span></div><div class="photo-slot"><span>Foto 4</span></div><div class="photo-slot"><span>Foto 5</span></div></div></section>
-<section id="evento" class="section cards"><article class="card"><span>💒</span><h3>Ceremonia</h3><p><strong>Hora:</strong> pendiente de confirmar</p><p><strong>Lugar:</strong> pendiente de confirmar</p></article><article class="card"><span>🥂</span><h3>Celebración</h3><p><strong>Hora:</strong> pendiente de confirmar</p><p><strong>Lugar:</strong> pendiente de confirmar</p></article><article class="card"><span>✨</span><h3>Detalles</h3><p>Muy pronto añadiremos más información para todos los invitados.</p></article></section>
-<section id="confirmar" class="section rsvp"><div class="rsvp-card"><p class="overline">Confirmación</p><h2>Confirma tu asistencia</h2><p class="rsvp-intro">Nos ayudará muchísimo saber si podremos contar contigo en nuestro día.</p><form id="rsvpForm" class="wedding-form"><div class="form-grid"><label>Nombre *<input type="text" name="nombre" required placeholder="Tu nombre"></label><label>Apellidos *<input type="text" name="apellidos" required placeholder="Tus apellidos"></label><label class="full">¿Asistirás? *<select name="asiste" id="asiste" required><option value="">Selecciona una opción</option><option value="Sí">Sí, asistiré</option><option value="No">No podré asistir</option></select></label><div id="extraFields" class="extra-fields full"><label>Acompañante<input type="text" name="acompanante" placeholder="Nombre del acompañante, si procede"></label><label>Adultos *<input type="number" name="adultos" id="adultos" min="1" value="1"></label><label>Niños *<input type="number" name="ninos" id="ninos" min="0" value="0"></label><label>¿Necesitas autobús? *<select name="autobus" id="autobus"><option value="">Selecciona una opción</option><option value="Sí">Sí</option><option value="No">No</option></select></label><label class="full">Alergías o intolerancias<textarea name="alergias" rows="4" placeholder="Indica alergias, intolerancias o escribe Ninguna"></textarea></label></div></div><button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button><p id="formMessage" class="form-message"></p></form></div></section></main><footer><p>Anabel & Christian</p></footer><script>window.RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzKQWPWxiD6p_HpqNj1npMZ0RTOeOvUso6rn30fDbIw2J-OOUDUcW56sX3kTNSE-WX10Q/exec";</script><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anabel & Christian</title>
+  <meta name="description" content="Web de la boda de Anabel y Christian" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+<header class="hero" id="inicio">
+  <nav class="nav">
+    <div class="brand">A & C</div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#inicio">Inicio</a>
+      <a href="#galeria">Fotos</a>
+      <a href="#evento">Evento</a>
+      <a href="#confirmar">Confirmar</a>
+    </div>
+  </nav>
+
+  <section class="hero-content">
+    <p class="overline">Nuestra boda</p>
+    <h1>Anabel & Christian</h1>
+    <p class="date">Muy pronto celebraremos nuestro gran día</p>
+
+    <div class="signature-countdown" id="countdown">
+      <div><strong id="days">00</strong><span>días</span></div>
+      <div><strong id="hours">00</strong><span>horas</span></div>
+      <div><strong id="minutes">00</strong><span>minutos</span></div>
+      <div><strong id="seconds">00</strong><span>segundos</span></div>
+    </div>
+
+    <a class="btn" href="#confirmar">Confirmar asistencia</a>
+  </section>
+</header>
+
+<main>
+  <section class="section intro">
+    <p class="overline">Con mucho amor</p>
+    <h2>Queremos compartir este día contigo</h2>
+    <p>
+      Hay momentos que se viven una sola vez, pero se recuerdan para siempre.
+      Nos hace muchísima ilusión celebrar este día rodeados de nuestra familia y amigos.
+    </p>
+  </section>
+
+  <section id="galeria" class="section gallery-section">
+    <p class="overline">Recuerdos</p>
+    <h2>Nuestra historia en imágenes</h2>
+    <p class="gallery-text">Espacios preparados para añadir vuestras fotos favoritas.</p>
+
+    <div class="gallery">
+      <div class="photo-slot large"><span>Foto principal</span></div>
+      <div class="photo-slot"><span>Foto 2</span></div>
+      <div class="photo-slot"><span>Foto 3</span></div>
+      <div class="photo-slot"><span>Foto 4</span></div>
+      <div class="photo-slot"><span>Foto 5</span></div>
+    </div>
+  </section>
+
+  <section id="evento" class="section cards">
+    <article class="card">
+      <span>💒</span>
+      <h3>Ceremonia</h3>
+      <p><strong>Hora:</strong> pendiente de confirmar</p>
+      <p><strong>Lugar:</strong> pendiente de confirmar</p>
+    </article>
+
+    <article class="card">
+      <span>🥂</span>
+      <h3>Celebración</h3>
+      <p><strong>Hora:</strong> pendiente de confirmar</p>
+      <p><strong>Lugar:</strong> pendiente de confirmar</p>
+    </article>
+
+    <article class="card">
+      <span>✨</span>
+      <h3>Detalles</h3>
+      <p>Muy pronto añadiremos más información para todos los invitados.</p>
+    </article>
+  </section>
+
+  <section id="confirmar" class="section rsvp">
+    <div class="rsvp-card">
+      <p class="overline">Confirmación</p>
+      <h2>Confirma tu asistencia</h2>
+      <p class="rsvp-intro">Nos ayudará muchísimo saber si podremos contar contigo en nuestro día.</p>
+
+      <form id="rsvpForm" class="wedding-form">
+        <div class="form-grid">
+          <label>
+            Nombre *
+            <input type="text" name="nombre" required placeholder="Tu nombre">
+          </label>
+
+          <label>
+            Apellidos *
+            <input type="text" name="apellidos" required placeholder="Tus apellidos">
+          </label>
+
+          <label class="full">
+            ¿Asistirás? *
+            <select name="asiste" id="asiste" required>
+              <option value="">Selecciona una opción</option>
+              <option value="Sí">Sí, asistiré</option>
+              <option value="No">No podré asistir</option>
+            </select>
+          </label>
+
+          <div id="extraFields" class="extra-fields full">
+            <label class="full">
+              Acompañante
+              <input type="text" name="acompanante" placeholder="Nombre y apellidos del acompañante, si procede">
+            </label>
+
+            <label>
+              Adultos *
+              <input type="number" name="adultos" id="adultos" min="1" value="1">
+            </label>
+
+            <label>
+              Niños *
+              <input type="number" name="ninos" id="ninos" min="0" value="0">
+            </label>
+
+            <label class="full">
+              ¿Necesitas autobús? *
+              <select name="autobus" id="autobus">
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+              </select>
+            </label>
+
+            <label class="full">
+              Alergías o intolerancias
+              <textarea name="alergias" rows="4" placeholder="Indica alergias, intolerancias o escribe Ninguna"></textarea>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
+        <p id="formMessage" class="form-message"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Anabel & Christian</p>
+</footer>
+
+<script>window.RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbzKQWPWxiD6p_HpqNj1npMZ0RTOeOvUso6rn30fDbIw2J-OOUDUcW56sX3kTNSE-WX10Q/exec";</script>
+<script src="script.js"></script>
+</body>
+</html>

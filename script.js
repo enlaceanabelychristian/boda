@@ -74,8 +74,10 @@ if (form) {
     const payload = {
       nombre: String(formData.get("nombre") || "").trim(),
       apellidos: String(formData.get("apellidos") || "").trim(),
-      acompanante: asiste === "Sí" ? String(formData.get("acompanante") || "").trim() : "",
       asiste: asiste,
+      // Si asiste, guarda el teléfono; si no, lo deja vacío
+      telefono: asiste === "Sí" ? String(formData.get("telefono") || "").trim() : "",
+      acompanante: asiste === "Sí" ? String(formData.get("acompanante") || "").trim() : "",
       adultos: asiste === "Sí" ? String(formData.get("adultos") || "").trim() : "",
       ninos: asiste === "Sí" ? String(formData.get("ninos") || "").trim() : "",
       alergias: asiste === "Sí" ? String(formData.get("alergias") || "").trim() : "",

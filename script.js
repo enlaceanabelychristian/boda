@@ -1,4 +1,5 @@
-const weddingDate = new Date("2026-10-31T11:30:00").getTime();
+// Al añadir +01:00 al final, fijas la hora exacta de la boda de forma absoluta
+const weddingDate = new Date("2026-10-31T11:30:00+01:00").getTime();
 
 function updateCountdown() {
   const countdown = document.getElementById("countdown");

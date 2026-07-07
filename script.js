@@ -34,8 +34,6 @@ if (menuBtn && navLinks) {
 const form = document.getElementById("rsvpForm");
 const asisteSelect = document.getElementById("asiste");
 const extraFields = document.getElementById("extraFields");
-const adultosInput = document.getElementById("adultos");
-const ninosInput = document.getElementById("ninos");
 const autobusSelect = document.getElementById("autobus");
 const formMessage = document.getElementById("formMessage");
 const submitBtn = document.getElementById("submitBtn");
@@ -44,13 +42,9 @@ function toggleExtraFields() {
   const asiste = asisteSelect.value;
   if (asiste === "No") {
     extraFields.classList.add("hidden");
-    adultosInput.required = false;
-    ninosInput.required = false;
     autobusSelect.required = false;
   } else {
     extraFields.classList.remove("hidden");
-    adultosInput.required = asiste === "Sí";
-    ninosInput.required = asiste === "Sí";
     autobusSelect.required = asiste === "Sí";
   }
 }
@@ -77,8 +71,6 @@ if (form) {
       apellidos: String(formData.get("apellidos") || "").trim(),
       asiste: asiste,
       telefono: asiste === "Sí" ? String(formData.get("telefono") || "").trim() : "",
-      adultos: asiste === "Sí" ? String(formData.get("adultos") || "").trim() : "",
-      ninos: asiste === "Sí" ? String(formData.get("ninos") || "").trim() : "",
       alergias: asiste === "Sí" ? String(formData.get("alergias") || "").trim() : "",
       autobus: asiste === "Sí" ? String(formData.get("autobus") || "").trim() : ""
     };
@@ -89,14 +81,6 @@ if (form) {
     }
 
     if (payload.asiste === "Sí") {
-      if (!payload.adultos || Number(payload.adultos) < 1) {
-        showMessage("Indica al menos 1 adulto.", "error");
-        return;
-      }
-      if (payload.ninos === "" || Number(payload.ninos) < 0) {
-        showMessage("Indica el número de niños, aunque sea 0.", "error");
-        return;
-      }
       if (!payload.autobus) {
         showMessage("Indica si necesitas autobús.", "error");
         return;
@@ -116,10 +100,8 @@ if (form) {
 
       showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
       
-      // Reseteamos valores visuales sin romper la selección si decide añadir al calendario
       form.reset();
       
-      // Si el cliente asistía originalmente, dejamos el botón dorado visible un momento
       if (asiste === "Sí") {
         asisteSelect.value = "Sí";
         toggleExtraFields();

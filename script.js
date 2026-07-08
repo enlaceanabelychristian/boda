@@ -1,6 +1,117 @@
 // Al añadir +01:00 al final, fijas la hora exacta de la boda de forma absoluta
 const weddingDate = new Date("2026-10-31T11:30:00+01:00").getTime();
 const FOTOS_BODA_ENDPOINT = "https://boda-azure-one.vercel.app/api/fotos-boda";
+const carouselTrack = document.getElementById("carouselTrack");
+let lightboxZoom = 1;
+
+function crearLightboxFotos() {
+  if (document.getElementById("photoLightbox")) return;
+
+  const lightbox = document.createElement("div");
+  lightbox.id = "photoLightbox";
+  lightbox.className = "photo-lightbox";
+
+  lightbox.innerHTML = `
+    <div class="lightbox-inner">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">×</button>
+
+      <div class="lightbox-img-wrap">
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Foto ampliada">
+      </div>
+
+      <div class="lightbox-actions">
+        <button class="lightbox-btn" id="zoomOutBtn">− Reducir</button>
+        <button class="lightbox-btn" id="zoomResetBtn">Tamaño normal</button>
+        <button class="lightbox-btn" id="zoomInBtn">+ Ampliar</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(lightbox);
+
+  document.getElementById("lightboxClose").addEventListener("click", cerrarLightbox);
+  lightbox.addEventListener("click", (e) => {
+    if (e.target.id === "photoLightbox") cerrarLightbox();
+  });
+
+  document.getElementById("zoomInBtn").addEventListener("click", () => cambiarZoom(0.25));
+  document.getElementById("zoomOutBtn").addEventListener("click", () => cambiarZoom(-0.25));
+  document.getElementById("zoomResetBtn").addEventListener("click", () => resetZoom());
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") cerrarLightbox();
+  });
+}
+
+function abrirLightbox(src) {
+  crearLightboxFotos();
+
+  const lightbox = document.getElementById("photoLightbox");
+  const img = document.getElementById("lightboxImg");
+
+  lightboxZoom = 1;
+  img.src = src;
+  img.style.transform = `scale(${lightboxZoom})`;
+
+  lightbox.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function cerrarLightbox() {
+  const lightbox = document.getElementById("photoLightbox");
+  if (!lightbox) return;
+
+  lightbox.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+function cambiarZoom(valor) {
+  const img = document.getElementById("lightboxImg");
+  if (!img) return;
+
+  lightboxZoom = Math.min(3, Math.max(0.5, lightboxZoom + valor));
+  img.style.transform = `scale(${lightboxZoom})`;
+}
+
+function resetZoom() {
+  const img = document.getElementById("lightboxImg");
+  if (!img) return;
+
+  lightboxZoom = 1;
+  img.style.transform = `scale(${lightboxZoom})`;
+}
+
+async function cargarFotosCarruselBoda() {
+  if (!carouselTrack || typeof FOTOS_BODA_ENDPOINT === "undefined") return;
+
+  try {
+    const response = await fetch(FOTOS_BODA_ENDPOINT + "?t=" + Date.now());
+    const data = await response.json();
+
+    if (!data.ok || !data.fotos || data.fotos.length === 0) return;
+
+    const fotosReales = data.fotos;
+    const fotosDuplicadas = [...fotosReales, ...fotosReales];
+
+    carouselTrack.innerHTML = fotosDuplicadas.map((foto) => `
+      <div class="carousel-photo" data-img="${foto.url}">
+        <img src="${foto.url}" alt="Foto subida por invitados" loading="lazy">
+      </div>
+    `).join("");
+
+    document.querySelectorAll(".carousel-photo").forEach((card) => {
+      card.addEventListener("click", () => {
+        abrirLightbox(card.dataset.img);
+      });
+    });
+
+  } catch (error) {
+    console.error("Error cargando fotos del carrusel:", error);
+  }
+}
+
+cargarFotosCarruselBoda();
+setInterval(cargarFotosCarruselBoda, 30000);
 
 function updateCountdown() {
   const countdown = document.getElementById("countdown");

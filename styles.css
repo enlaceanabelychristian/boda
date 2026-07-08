@@ -982,10 +982,3 @@ footer p {
   display: block;
   box-shadow: none;        /* El sombreado ya lo gestiona la propia tarjeta */
 }
-
-/* 4. Ajuste para la tercera tarjeta (Detalles) para que el emoticono mantenga su espacio superior */
-.card span {
-  font-size: 34px;
-  display: block;
-  margin: 38px auto 16px auto; /* Le añade el margen superior que perdió la tarjeta */
-}

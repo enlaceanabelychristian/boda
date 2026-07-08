@@ -53,7 +53,7 @@ body {
     url("asset/fotos/paris.jpeg");
 
   background-size: cover;
-  background-position: 10% center;
+  background-position: 100% right;
   background-repeat: no-repeat;
 }
 

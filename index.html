@@ -57,15 +57,16 @@
     <p class="gallery-text">Espacios preparados para añadir vuestras fotos favoritas.</p>
 
     <div class="event-carousel" id="eventCarousel">
-  <div class="carousel-track" id="carouselTrack">
-    <div class="carousel-placeholder">
-      <span>📸</span>
-      <p>Aquí aparecerán las fotos que suban los invitados</p>
+      <div class="carousel-track" id="carouselTrack">
+        <div class="carousel-placeholder">
+          <span>📸</span>
+          <p>Aquí aparecerán las fotos que suban los invitados</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-</section>
- <section id="evento" class="section cards">
+  </section>
+
+  <section id="evento" class="section cards">
     <article class="card">
       <img src="asset/fotos/iglesia.png" alt="Ceremonia" class="card-img">
       <h3>Ceremonia</h3>
@@ -87,32 +88,34 @@
       <p>Pnte de rellenar</p>
     </article>
   </section>
- <section id="subir-foto" class="section upload-section">
-  <div class="upload-card">
-    <p class="overline">Fotos del evento</p>
-    <h2>Sube tu recuerdo</h2>
-    <p class="upload-intro">
-      Comparte con nosotros las fotos que hagas durante la boda.
-    </p>
 
-    <form id="uploadPhotoForm" class="upload-form">
-      <label class="upload-box">
-        <span>📸</span>
-        <strong>Seleccionar foto</strong>
-        <small>JPG, PNG o WEBP</small>
-        <input type="file" id="eventPhoto" accept="image/*" required>
-      </label>
+  <section id="subir-foto" class="section upload-section">
+    <div class="upload-card">
+      <p class="overline">Fotos del evento</p>
+      <h2>Sube tu recuerdo</h2>
+      <p class="upload-intro">
+        Comparte con nosotros las fotos que hagas durante la boda.
+      </p>
 
-      <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
+      <form id="uploadPhotoForm" class="upload-form">
+        <label class="upload-box">
+          <span>📸</span>
+          <strong>Seleccionar foto</strong>
+          <small>JPG, PNG o WEBP</small>
+          <input type="file" id="eventPhoto" accept="image/*" required>
+        </label>
 
-      <button type="submit" class="btn submit-btn" id="uploadBtn">
-        Subir fotografía
-      </button>
+        <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
 
-      <p id="uploadMessage" class="form-message"></p>
-    </form>
-  </div>
-</section>
+        <button type="submit" class="btn submit-btn" id="uploadBtn">
+          Subir fotografía
+        </button>
+
+        <p id="uploadMessage" class="form-message"></p>
+      </form>
+    </div>
+  </section>
+
   <section id="confirmar" class="section rsvp">
     <div class="rsvp-card">
       <p class="overline">Confirmación</p>
@@ -164,24 +167,10 @@
 
         <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
         <p id="formMessage" class="form-message"></p>
- 
       </form>
     </div>
   </section>
 </main>
-
-<div id="calendarModal" class="modal-overlay hidden">
-  <div class="modal-content">
-    <h3>¡Asistencia Guardada!</h3>
-    <p>¿Deseas añadir este evento a tu calendario para no olvidar la fecha?</p>
-    <div class="modal-actions">
-      <a id="googleCalendarBtn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Anabel+%26+Christian&dates=20261031T103000Z/20261031T223000Z&details=%C2%A1Asistencia+confirmada!+Prepara+tu+mejor+vestimenta+para+acompa%C3%B1ar+a+Anabel+y+Christian+en+su+gran+d%C3%ADa.&location=Iglesia+Ntra.+Sra.+del+Carmen,+Gibraleon" target="_blank" class="btn modal-btn-gold">
-        📅 Añadir al Calendario
-      </a>
-      <button id="closeModalBtn" class="modal-btn-close">Ahora no</button>
-    </div>
-  </div>
-</div>
 
 <footer>
   <p>Anabel & Christian</p>

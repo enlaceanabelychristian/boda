@@ -57,7 +57,6 @@ body {
   background-repeat: no-repeat;
 }
 
-
 .hero:before {
   width: 560px;
   height: 560px;
@@ -87,9 +86,7 @@ body {
   font-family: "Parisienne", cursive;
   font-size: 40px;
   color: #ffffff;
-
   -webkit-text-stroke: 0.45px rgba(199,161,90,.85);
-
   text-shadow:
     0 2px 6px rgba(199,161,90,.45),
     0 3px 12px rgba(0,0,0,.25);
@@ -101,30 +98,27 @@ body {
 }
 
 .nav-links a{
-    position:relative;
-    color:#fff;
-    text-decoration:none;
-    transition:.35s;
+  position:relative;
+  color:#fff;
+  text-decoration:none;
+  transition:.35s;
 }
 
 .nav-links a::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    bottom:-8px;
-
-    width:0;
-    height:2px;
-
-    background:linear-gradient(90deg,#e9d8ad,#c7a15a,#e9d8ad);
-
-    transition:.35s ease;
-    transform:translateX(-50%);
-    border-radius:50px;
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-8px;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,#e9d8ad,#c7a15a,#e9d8ad);
+  transition:.35s ease;
+  transform:translateX(-50%);
+  border-radius:50px;
 }
 
 .nav-links a:hover::after{
-    width:100%;
+  width:100%;
 }
 
 .menu-btn {
@@ -160,36 +154,32 @@ body {
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 18px;
-
   -webkit-text-stroke: 0.2px rgba(199, 161, 90, 0.9);
-
   text-shadow:
     0 1px 3px rgba(199, 161, 90, 0.45),
     0 2px 6px rgba(0,0,0,.30);
 }
-/* Bloque exclusivo para el texto de bienvenida en el Hero */
+
 .hero-overline {
-  color: #ffffff;             /* Cambiado a blanco para que resalte sobre el fondo morado */
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 13px;
   font-weight: 600;
   margin-bottom: 18px;
   display: block;
-
-  /* Sombreado sutil dorado y oscuro para darle relieve sobre la foto */
   -webkit-text-stroke: 0.25px rgba(199, 161, 90, 0.85);
   text-shadow:
     0 1px 3px rgba(199, 161, 90, 0.45),
     0 2px 8px rgba(0, 0, 0, 0.40);
 }
+
 h1 {
   font-family: "Parisienne", cursive;
   color: white;
   font-size: clamp(74px, 12vw, 158px);
   font-weight: 400;
   line-height: 0.95;
-
   -webkit-text-stroke: 0.6px rgba(199, 161, 90, 0.75);
   text-shadow:
     0 2px 8px rgba(199, 161, 90, 0.35),
@@ -203,9 +193,7 @@ h1 {
   text-transform: uppercase;
   color: #ffffff;
   font-weight: 500;
-
   -webkit-text-stroke: 0.25px rgba(199, 161, 90, 0.85);
-
   text-shadow:
     0 1px 3px rgba(199, 161, 90, 0.45),
     0 2px 8px rgba(0, 0, 0, 0.35);
@@ -307,8 +295,10 @@ h2 {
   background: white;
   border: 1px solid rgba(199, 161, 90, 0.18);
   border-radius: 34px;
-  padding: 38px 30px;
   box-shadow: 0 24px 70px rgba(151, 104, 93, 0.08);
+  position: relative;
+  overflow: hidden;
+  padding: 0 0 38px 0;
 }
 
 .card span {
@@ -323,8 +313,19 @@ h2 {
   margin-bottom: 12px;
 }
 
+.card h3, 
 .card p {
-  color: var(--gris);
+  padding: 0 30px;
+}
+
+.card .card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0 0 20px 0;
+  display: block;
+  box-shadow: none;
 }
 
 /* ==========================================================================
@@ -439,7 +440,6 @@ label {
   text-transform: uppercase;
 }
 
-/* Soporte global para inputs, incluyendo select, textarea y tipos específicos como 'tel' */
 input,
 input[type="tel"],
 select,
@@ -510,19 +510,19 @@ footer p {
    8. MEDIA QUERIES (RESPONSIVE)
    ========================================================================== */
 @media (max-width: 780px) {
-.hero {
+  .hero {
     background-image:
       linear-gradient(
-        to bottom, /* Cambiamos la dirección del degradado a "hacia abajo" para que cubra bien los textos en vertical */
+        to bottom,
         rgba(98, 45, 74, 0.95) 0%,
         rgba(98, 45, 74, 0.7) 40%,
         rgba(98, 45, 74, 0.2) 75%,
         rgba(98, 45, 74, 0) 100%
       ),
-      url("asset/fotos/paris.jpeg"); /* <--- Aquí carga tu foto en 9:16 */
-
-    background-position: center center; /* Al ser 9:16, la centramos perfectamente */
+      url("asset/fotos/paris.jpeg");
+    background-position: center center;
   }
+  
   .menu-btn{
     display:block;
   }
@@ -533,26 +533,21 @@ footer p {
     top:82px;
     left:0;
     right:0;
-
     flex-direction:column;
     gap:18px;
-
     padding:24px;
     border-radius:20px;
-
-    /* NUEVO ESTILO */
-    background:rgba(211,167,125,.40);   /* 40% de opacidad */
+    background:rgba(211,167,125,.40);
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
-
     border:1px solid rgba(255,255,255,.15);
-
     box-shadow:0 15px 40px rgba(0,0,0,.30);
   }
 
   .nav-links.show{
     display:flex;
   }
+  
   .signature-countdown {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -584,8 +579,9 @@ footer p {
     border-radius: 32px;
   }
 }
+
 /* ==========================================================================
-   9. VENTANA EMERGENTE (MODAL)
+   9. VENTANA EMERGENTE (MODAL) & MUSIC BUTTON
    ========================================================================== */
 .modal-overlay {
   position: fixed;
@@ -593,8 +589,8 @@ footer p {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(58, 48, 45, 0.6); /* Fondo semi-transparente oscuro */
-  backdrop-filter: blur(5px); /* Desenfoque estético */
+  background: rgba(58, 48, 45, 0.6);
+  backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -664,6 +660,7 @@ footer p {
 .modal-btn-close:hover {
   color: var(--texto);
 }
+
 .music-btn {
   position: fixed;
   right: 22px;
@@ -699,67 +696,31 @@ footer p {
   border: 1px solid rgba(199, 161, 90, .22);
   white-space: nowrap;
 }
-.hero{
-    position:relative;
-    overflow:hidden;
-}
-/* ==========================================================================
-   10. SUBIDA DE FOTOS EVENTO
-   ========================================================================== */
 
 /* ==========================================================================
    10. SUBIDA DE FOTOS EVENTO (DEGRADADO Y FOTO DETRÁS DE LA TARJETA)
    ========================================================================== */
-
 .upload-section {
   width: 100%;
   max-width: none;
-  padding: 90px 4%; /* Mantiene tu espacio original arriba y abajo */
+  padding: 90px 4%;
   position: relative;
   overflow: hidden;
-
-  /* Propiedades para que la foto de fondo quede perfecta */
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-
-  /* AQUÍ está el fondo: 1º El degradado lineal, 2º Tu foto */
+  
+  /* Gradiente lineal blanco dorado a la izquierda y transparente (hueco) a la derecha */
   background-image: 
     linear-gradient(
       to right, 
-      rgba(245, 238, 220, 0.95) 0%,   /* Blanco dorado marfil en la izquierda */
-      rgba(245, 238, 220, 0.60) 40%,  /* Se va suavizando hacia el centro */
-      transparent 100%                 /* Totalmente transparente (hueco) en la derecha */
+      rgba(245, 238, 220, 0.95) 0%,   
+      rgba(245, 238, 220, 0.60) 40%,  
+      transparent 100%                 
     ), 
-    url("asset/fotos/tu-foto-boda.jpg"); /* ◄ Cambia esto por la ruta real de tu foto */
+    url("https://www.enlaceanabelychristian.es/asset/fotos/copa.jpg.jpeg");
 }
 
-.upload-card {
-  width: min(760px, 100%);
-  margin: auto; /* Mantiene la tarjeta perfectamente centrada en medio del degradado */
-  background: rgba(255, 250, 248, 0.94); /* Tu tarjeta blanca se queda intacta */
-  border: 1px solid var(--borde);
-  border-radius: 44px;
-  padding: clamp(34px, 6vw, 68px);
-  box-shadow: 0 30px 90px rgba(151, 104, 93, 0.13);
-  text-align: center;
-  position: relative;
-  z-index: 2; /* Asegura que se quede por encima del fondo */
-}
-
-/* En móviles cambiamos el degradado de arriba a abajo para que acompañe el scroll */
-@media (max-width: 780px) {
-  .upload-section {
-    background-image: 
-      linear-gradient(
-        to bottom, 
-        rgba(245, 238, 220, 0.95) 0%,
-        rgba(245, 238, 220, 0.50) 60%,
-        transparent 100%
-      ), 
-      url("asset/fotos/copa.jpg.jpeg"); /* ◄ Pon la misma ruta aquí */
-  }
-}
 .upload-card {
   width: min(760px, 100%);
   margin: auto;
@@ -769,6 +730,8 @@ footer p {
   padding: clamp(34px, 6vw, 68px);
   box-shadow: 0 30px 90px rgba(151, 104, 93, 0.13);
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .upload-intro {
@@ -789,8 +752,7 @@ footer p {
   min-height: 190px;
   border: 2px dashed rgba(199, 161, 90, 0.45);
   border-radius: 30px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.78), rgba(248,238,238,.85));
+  background: linear-gradient(135deg, rgba(255,255,255,.78), rgba(248,238,238,.85));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -833,6 +795,7 @@ footer p {
   border: 1px solid var(--borde);
   box-shadow: 0 20px 50px rgba(151, 104, 93, 0.14);
 }
+
 /* CARRUSEL FOTOS EVENTO */
 .event-carousel {
   margin-top: 42px;
@@ -880,7 +843,6 @@ footer p {
   display: block;
 }
 
-/* Placeholder */
 .carousel-placeholder {
   width: min(650px, 90vw);
   min-height: 280px;
@@ -987,6 +949,17 @@ footer p {
 }
 
 @media (max-width: 780px) {
+  .upload-section {
+    background-image: 
+      linear-gradient(
+        to bottom, 
+        rgba(245, 238, 220, 0.95) 0%,
+        rgba(245, 238, 220, 0.50) 60%,
+        transparent 100%
+      ), 
+      url("https://www.enlaceanabelychristian.es/asset/fotos/copa.jpg.jpeg");
+  }
+
   .carousel-photo {
     width: 240px;
     height: 330px;
@@ -1000,27 +973,4 @@ footer p {
     top: 8px;
     right: 8px;
   }
-}
-/* 1. Ajuste en la tarjeta para que la foto respete las esquinas redondeadas */
-.card {
-  position: relative;
-  overflow: hidden; /* Esto recorta la foto para que se adapte a las esquinas de la tarjeta */
-  padding: 0 0 38px 0; /* Quitamos el padding de arriba y los lados para que la foto toque los bordes */
-}
-
-/* 2. Hacemos que todos los textos de la tarjeta mantengan su margen interno */
-.card h3, 
-.card p {
-  padding: 0 30px; /* Devuelve el espacio limpio a los textos */
-}
-
-/* 3. Estilo para que la foto ocupe todo el espacio superior */
-.card .card-img {
-  width: 100%;             /* Ocupa el 100% del ancho de la tarjeta */
-  height: 200px;           /* Altura fija para las fotos superiores (puedes variarla a tu gusto) */
-  object-fit: cover;       /* Evita que las imágenes se deformen al estirarse */
-  border-radius: 0;        /* Quitamos el diseño redondo anterior */
-  margin: 0 0 20px 0;      /* Elimina el centrado y le da margen solo hacia abajo */
-  display: block;
-  box-shadow: none;        /* El sombreado ya lo gestiona la propia tarjeta */
 }

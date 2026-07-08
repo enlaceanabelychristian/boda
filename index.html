@@ -87,7 +87,32 @@
       <p>Muy pronto añadiremos más información para todos los invitados.</p>
     </article>
   </section>
+ <section id="subir-foto" class="section upload-section">
+  <div class="upload-card">
+    <p class="overline">Fotos del evento</p>
+    <h2>Sube tu recuerdo</h2>
+    <p class="upload-intro">
+      Comparte con nosotros las fotos que hagas durante la boda.
+    </p>
 
+    <form id="uploadPhotoForm" class="upload-form">
+      <label class="upload-box">
+        <span>📸</span>
+        <strong>Seleccionar foto</strong>
+        <small>JPG, PNG o WEBP</small>
+        <input type="file" id="eventPhoto" accept="image/*" required>
+      </label>
+
+      <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
+
+      <button type="submit" class="btn submit-btn" id="uploadBtn">
+        Subir fotografía
+      </button>
+
+      <p id="uploadMessage" class="form-message"></p>
+    </form>
+  </div>
+</section>
   <section id="confirmar" class="section rsvp">
     <div class="rsvp-card">
       <p class="overline">Confirmación</p>
@@ -139,32 +164,7 @@
 
         <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
         <p id="formMessage" class="form-message"></p>
-        <section id="subir-foto" class="section upload-section">
-  <div class="upload-card">
-    <p class="overline">Fotos del evento</p>
-    <h2>Sube tu recuerdo</h2>
-    <p class="upload-intro">
-      Comparte con nosotros las fotos que hagas durante la boda.
-    </p>
-
-    <form id="uploadPhotoForm" class="upload-form">
-      <label class="upload-box">
-        <span>📸</span>
-        <strong>Seleccionar foto</strong>
-        <small>JPG, PNG o WEBP</small>
-        <input type="file" id="eventPhoto" accept="image/*" required>
-      </label>
-
-      <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
-
-      <button type="submit" class="btn submit-btn" id="uploadBtn">
-        Subir fotografía
-      </button>
-
-      <p id="uploadMessage" class="form-message"></p>
-    </form>
-  </div>
-</section>
+ 
       </form>
     </div>
   </section>

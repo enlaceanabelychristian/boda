@@ -1,5 +1,6 @@
 // Al añadir +01:00 al final, fijas la hora exacta de la boda de forma absoluta
 const weddingDate = new Date("2026-10-31T11:30:00+01:00").getTime();
+const FOTOS_BODA_ENDPOINT = "https://boda-azure-one.vercel.app/api/fotos-boda";
 
 function updateCountdown() {
   const countdown = document.getElementById("countdown");

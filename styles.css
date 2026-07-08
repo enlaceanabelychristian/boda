@@ -167,7 +167,22 @@ body {
     0 1px 3px rgba(199, 161, 90, 0.45),
     0 2px 6px rgba(0,0,0,.30);
 }
+/* Bloque exclusivo para el texto de bienvenida en el Hero */
+.hero-overline {
+  color: #ffffff;             /* Cambiado a blanco para que resalte sobre el fondo morado */
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  display: block;
 
+  /* Sombreado sutil dorado y oscuro para darle relieve sobre la foto */
+  -webkit-text-stroke: 0.25px rgba(199, 161, 90, 0.85);
+  text-shadow:
+    0 1px 3px rgba(199, 161, 90, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.40);
+}
 h1 {
   font-family: "Parisienne", cursive;
   color: white;

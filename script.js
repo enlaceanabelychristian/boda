@@ -292,10 +292,10 @@ function enviarConfirmacionJSONP(payload) {
    ========================================================================== */
 const musicBtn = document.getElementById("musicBtn");
 const playlist = [
-  "asset/music/musica1.mp3",
-  "asset/music/musica2.mp3",
-  "asset/music/musica3.mp3",
-  "asset/music/musica4.mp3"
+  "asset/music/musica1.mp3?v=1",
+  "asset/music/musica2.mp3?v=1",
+  "asset/music/musica3.mp3?v=1",
+  "asset/music/musica4.mp3?v=1"
 ];
 let currentTrack = 0;
 const bgMusic = new Audio();

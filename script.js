@@ -298,7 +298,7 @@ const playlist = [
 
 let currentTrack = 0;
 const bgMusic = new Audio(playlist[currentTrack]);
-bgMusic.volume = 0.5;
+bgMusic.volume = 0.8;
 
 function playTrack(index) {
   bgMusic.src = playlist[index];

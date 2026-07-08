@@ -86,7 +86,13 @@ body {
 .brand {
   font-family: "Parisienne", cursive;
   font-size: 40px;
-  color: var(--dorado);
+  color: #ffffff;
+
+  -webkit-text-stroke: 0.45px rgba(199,161,90,.85);
+
+  text-shadow:
+    0 2px 6px rgba(199,161,90,.45),
+    0 3px 12px rgba(0,0,0,.25);
 }
 
 .nav-links {
@@ -94,12 +100,31 @@ body {
   gap: 28px;
 }
 
-.nav-links a {
-  color: var(--texto);
-  text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+.nav-links a{
+    position:relative;
+    color:#fff;
+    text-decoration:none;
+    transition:.35s;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-8px;
+
+    width:0;
+    height:2px;
+
+    background:linear-gradient(90deg,#e9d8ad,#c7a15a,#e9d8ad);
+
+    transition:.35s ease;
+    transform:translateX(-50%);
+    border-radius:50px;
+}
+
+.nav-links a:hover::after{
+    width:100%;
 }
 
 .menu-btn {
@@ -129,12 +154,18 @@ body {
 }
 
 .overline {
-  color: var(--dorado);
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 18px;
+
+  -webkit-text-stroke: 0.2px rgba(199, 161, 90, 0.9);
+
+  text-shadow:
+    0 1px 3px rgba(199, 161, 90, 0.45),
+    0 2px 6px rgba(0,0,0,.30);
 }
 
 h1 {
@@ -155,7 +186,14 @@ h1 {
   font-size: 17px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--gris);
+  color: #ffffff;
+  font-weight: 500;
+
+  -webkit-text-stroke: 0.25px rgba(199, 161, 90, 0.85);
+
+  text-shadow:
+    0 1px 3px rgba(199, 161, 90, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .signature-countdown {

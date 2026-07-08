@@ -169,10 +169,10 @@ function enviarConfirmacionJSONP(payload) {
 const musicBtn = document.getElementById("musicBtn");
 
 const playlist = [
-  "musica%20(1).mp3",
-  "musica%20(2).mp3",
-  "musica%20(3).mp3",
-  "musica%20(4).mp3"
+  "asset/music/musica%20(1).mp3",
+  "asset/music/musica%20(2).mp3",
+  "asset/music/musica%20(3).mp3",
+  "asset/music/musica%20(4).mp3"
 ];
 
 let currentTrack = 0;

@@ -519,7 +519,7 @@ footer p {
         rgba(98, 45, 74, 0.2) 75%,
         rgba(98, 45, 74, 0) 100%
       ),
-      url("asset/fotos/paris.jpg"); /* <--- Aquí carga tu foto en 9:16 */
+      url("asset/fotos/paris.jepg"); /* <--- Aquí carga tu foto en 9:16 */
 
     background-position: center center; /* Al ser 9:16, la centramos perfectamente */
   }

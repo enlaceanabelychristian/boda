@@ -287,6 +287,9 @@ function enviarConfirmacionJSONP(payload) {
     document.body.appendChild(script);
   });
 }
+/* ==========================================================================
+   GESTIÓN DE MÚSICA DE FONDO
+   ========================================================================== */
 const musicBtn = document.getElementById("musicBtn");
 const playlist = [
   "asset/music/musica1.mp3",
@@ -295,77 +298,89 @@ const playlist = [
   "asset/music/musica4.mp3"
 ];
 let currentTrack = 0;
-const bgMusic = new Audio(playlist[currentTrack]);
-bgMusic.volume = 0.8;
+const bgMusic = new Audio();
+bgMusic.volume = 0.5;
+bgMusic.src = playlist[currentTrack];
 
+// Función optimizada para reproducir una pista concreta
 function playTrack(index) {
-  bgMusic.src = playlist[index];
-  bgMusic.volume = 0.5;
+  currentTrack = index;
+  bgMusic.src = playlist[currentTrack];
+  bgMusic.load(); // Fuerza al navegador a limpiar el búfer viejo y cargar el archivo nuevo
+  
   bgMusic.play()
     .then(() => {
-      // Nos aseguramos de que el botón cambie al estado "Sonando"
-      if (musicBtn) {
-        musicBtn.classList.add("playing");
-        musicBtn.textContent = "❚❚";
-      }
+      actualizarBotonMusica(true);
     })
-    .catch(() => {
-      console.log("El navegador bloqueó el cambio de pista hasta una acción del usuario.");
+    .catch((err) => {
+      console.log("Reproducción retenida por el navegador:", err);
     });
 }
 
+// Cambiar de pista automáticamente al terminar
 bgMusic.addEventListener("ended", () => {
   currentTrack = (currentTrack + 1) % playlist.length;
   playTrack(currentTrack);
 });
 
-// Función para arrancar la música en la primera interacción del usuario
-function arrancarMusicaEnInteraccion() {
-  if (bgMusic.paused) {
-    bgMusic.src = playlist[currentTrack];
-    bgMusic.volume = 0.5;
-    bgMusic.play()
-      .then(() => {
-        if (musicBtn) {
-          musicBtn.classList.add("playing");
-          musicBtn.textContent = "❚❚";
-        }
-        // Una vez que suena, quitamos los escuchadores para que no se vuelva a ejecutar
-        document.removeEventListener("click", arrancarMusicaEnInteraccion);
-        document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
-      })
-      .catch((err) => console.log("Interacción insuficiente para reproducir audio:", err));
+// Función auxiliar para mantener el botón sincronizado
+function actualizarBotonMusica(reproduciendo) {
+  if (!musicBtn) return;
+  if (reproduciendo) {
+    musicBtn.classList.add("playing");
+    musicBtn.textContent = "❚❚";
+  } else {
+    musicBtn.classList.remove("playing");
+    musicBtn.textContent = "♫";
   }
 }
 
-// Intentar reproducir al cargar, y si falla, esperar al primer clic o toque táctil
-window.addEventListener("load", () => {
-  bgMusic.src = playlist[currentTrack];
-  bgMusic.volume = 0.5;
+// Función limpia para activar el audio al interactuar (sin romper el buffer)
+function arrancarMusicaEnInteraccion() {
   bgMusic.play()
     .then(() => {
-      if (musicBtn) {
-        musicBtn.classList.add("playing");
-        musicBtn.textContent = "❚❚";
-      }
+      actualizarBotonMusica(true);
+      removerEscuchadoresGlobales();
     })
     .catch(() => {
-      console.log("Autoplay bloqueado. Esperando clic del usuario para activar música...");
+      // Si falla por algún motivo, no hacemos nada y dejamos que usen el botón directamente
+      removerEscuchadoresGlobales();
+    });
+}
+
+function removerEscuchadoresGlobales() {
+  document.removeEventListener("click", arrancarMusicaEnInteraccion);
+  document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
+}
+
+// Al cargar la página, preparamos el terreno
+window.addEventListener("load", () => {
+  bgMusic.load(); // Pre-carga el archivo musica1.mp3 de forma silenciosa
+  
+  // Intentamos un play directo (por si acaso el navegador lo permite)
+  bgMusic.play()
+    .then(() => {
+      actualizarBotonMusica(true);
+    })
+    .catch(() => {
+      console.log("Autoplay bloqueado. Esperando primer clic o toque del usuario...");
+      // Si el navegador lo frena, escuchamos el primer clic/toque para activarlo limpiamente
       document.addEventListener("click", arrancarMusicaEnInteraccion);
-      document.addEventListener("touchstart", arrancarMusicaEnInteraccion); // Para móviles
+      document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
     });
 });
 
+// Control manual del botón Play / Pause
 if (musicBtn) {
-  musicBtn.addEventListener("click", async () => {
+  musicBtn.addEventListener("click", async (e) => {
+    e.stopPropagation(); // Evita conflictos con el escuchador global
     if (bgMusic.paused) {
-      await bgMusic.play();
-      musicBtn.classList.add("playing");
-      musicBtn.textContent = "❚❚";
+      bgMusic.play()
+        .then(() => actualizarBotonMusica(true))
+        .catch(err => console.error("Error al pulsar play manual:", err));
     } else {
       bgMusic.pause();
-      musicBtn.classList.remove("playing");
-      musicBtn.textContent = "♫";
+      actualizarBotonMusica(false);
     }
   });
 }

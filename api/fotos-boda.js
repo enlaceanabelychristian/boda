@@ -1,4 +1,11 @@
 export default async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "https://www.enlaceanabelychristian.es");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
   const CLOUD_NAME = "mwbuyheu";
   const API_KEY = process.env.CLOUDINARY_API_KEY;
   const API_SECRET = process.env.CLOUDINARY_API_SECRET;

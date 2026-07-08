@@ -757,7 +757,7 @@ footer p {
         rgba(245, 238, 220, 0.50) 60%,
         transparent 100%
       ), 
-      url("asset/fotos/copas.jpeg"); /* ◄ Pon la misma ruta aquí */
+      url("asset/fotos/copa.jpg.jpeg"); /* ◄ Pon la misma ruta aquí */
   }
 }
 .upload-card {

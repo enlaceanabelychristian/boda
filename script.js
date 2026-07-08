@@ -82,20 +82,29 @@ function resetZoom() {
 }
 
 async function cargarFotosCarruselBoda() {
-  if (!carouselTrack || typeof FOTOS_BODA_ENDPOINT === "undefined") return;
+  if (!carouselTrack) return;
 
   try {
     const response = await fetch(FOTOS_BODA_ENDPOINT + "?t=" + Date.now());
     const data = await response.json();
 
-    if (!data.ok || !data.fotos || data.fotos.length === 0) return;
+    console.log("Fotos recibidas:", data);
 
-    const fotosReales = data.fotos;
-    const fotosDuplicadas = [...fotosReales, ...fotosReales];
+    if (!data.ok || !Array.isArray(data.fotos) || data.fotos.length === 0) {
+      carouselTrack.innerHTML = `
+        <div class="carousel-placeholder">
+          <span>📸</span>
+          <p>Aquí aparecerán las fotos que suban los invitados</p>
+        </div>
+      `;
+      return;
+    }
+
+    const fotosDuplicadas = [...data.fotos, ...data.fotos, ...data.fotos];
 
     carouselTrack.innerHTML = fotosDuplicadas.map((foto) => `
       <div class="carousel-photo" data-img="${foto.url}">
-        <img src="${foto.url}" alt="Foto subida por invitados" loading="lazy">
+        <img src="${foto.url}" alt="Foto subida por invitados">
       </div>
     `).join("");
 

@@ -510,29 +510,6 @@ footer p {
    8. MEDIA QUERIES (RESPONSIVE)
    ========================================================================== */
 @media (max-width: 780px) {
-   /* 1. Ajustamos el fondo en el móvil para buscar el equilibrio perfecto */
-  .hero {
-    background-position: 35% center; /* Ajusta este porcentaje (ej. 30%, 40%) para mover a los novios milimétricamente */
-  }
-
-  /* 2. Le damos un fondo protector al texto del móvil para que no tape las caras por completo o se lea mal */
-  .hero-content {
-    background: linear-gradient(to bottom, rgba(98, 45, 74, 0.85) 0%, rgba(98, 45, 74, 0.4) 60%, rgba(0,0,0,0) 100%);
-    justify-content: flex-start; /* Empuja el contenido un poco hacia arriba para liberar las caras */
-    padding-top: 40px;
-  }
-  
-  /* 3. Reducimos un poco el margen del contador para que todo suba */
-  .signature-countdown {
-    margin: 20px 0 20px;
-  }
-
-  /* ... El resto de tus estilos que ya tenías en la media query ... */
-  .menu-btn{
-    display:block;
-  }
-  /* etc... */
-}
 
   .menu-btn{
     display:block;

@@ -288,14 +288,12 @@ function enviarConfirmacionJSONP(payload) {
   });
 }
 const musicBtn = document.getElementById("musicBtn");
-
 const playlist = [
-  "asset/music/musica (1).mp3",
-  "asset/music/musica (2).mp3",
-  "asset/music/musica (3).mp3",
-  "asset/music/musica (4).mp3"
+  "asset/music/musica1.mp3",
+  "asset/music/musica2.mp3",
+  "asset/music/musica3.mp3",
+  "asset/music/musica4.mp3"
 ];
-
 let currentTrack = 0;
 const bgMusic = new Audio(playlist[currentTrack]);
 bgMusic.volume = 0.8;

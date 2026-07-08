@@ -932,13 +932,21 @@ footer p {
     right: 8px;
   }
 }
-/* Estilos para las nuevas imágenes de las tarjetas */
+/* ==========================================================================
+   11. ESTILOS PARA LAS IMÁGENES EN LAS TARJETAS (EVENTOS)
+   ========================================================================== */
 .card .card-img {
-  width: 70px;            /* Ajusta el tamaño de la foto (ancho) */
-  height: 70px;           /* Ajusta el tamaño de la foto (alto) */
-  object-fit: cover;      /* Asegura que la imagen no se deforme */
-  border-radius: 50%;     /* Hace la foto completamente redonda */
-  margin: 0 auto 15px auto; /* Centra la imagen y le da espacio abajo */
-  display: block;         /* Permite el correcto centrado con el margen */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Añade un sombreado suave */
+  width: 70px;              /* Ajusta el ancho de la foto */
+  height: 70px;             /* Ajusta el alto de la foto */
+  object-fit: cover;        /* Evita que la imagen se estire o se deforme */
+  border-radius: 50%;       /* Hace la foto perfectamente redonda */
+  margin: 0 auto 16px auto; /* Centra la foto horizontalmente y la separa del título */
+  display: block;           /* Permite aplicar los márgenes auto correctamente */
+  box-shadow: 0 4px 12px rgba(151, 104, 93, 0.15); /* Sombreado suave a juego con la web */
+}
+
+/* Ajuste por si el navegador intenta aplicar estilos antiguos del span a la imagen */
+.card img.card-img {
+  font-size: unset;
+  line-height: unset;
 }

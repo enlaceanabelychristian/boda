@@ -363,7 +363,7 @@ if (uploadForm) {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
-    formData.append("public_id_prefix", "fotos-evento");
+    formData.append("folder", "fotos-evento");
   
 
     try {

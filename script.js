@@ -209,3 +209,74 @@ if (musicBtn) {
     }
   });
 }
+const CLOUD_NAME = "mwbuyheu";
+const UPLOAD_PRESET = "boda_invitados";
+
+const uploadForm = document.getElementById("uploadPhotoForm");
+const eventPhoto = document.getElementById("eventPhoto");
+const photoPreview = document.getElementById("photoPreview");
+const uploadMessage = document.getElementById("uploadMessage");
+const uploadBtn = document.getElementById("uploadBtn");
+
+if (eventPhoto) {
+  eventPhoto.addEventListener("change", () => {
+    const file = eventPhoto.files[0];
+
+    if (!file) return;
+
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.classList.remove("hidden");
+    uploadMessage.textContent = "";
+    uploadMessage.className = "form-message";
+  });
+}
+
+if (uploadForm) {
+  uploadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = eventPhoto.files[0];
+
+    if (!file) {
+      uploadMessage.textContent = "Selecciona una foto primero.";
+      uploadMessage.className = "form-message error";
+      return;
+    }
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Subiendo...";
+    uploadMessage.textContent = "Subiendo foto, espera unos segundos...";
+    uploadMessage.className = "form-message";
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.secure_url) {
+        uploadMessage.textContent = "✅ Foto subida correctamente. ¡Gracias por compartir este recuerdo!";
+        uploadMessage.className = "form-message success";
+        uploadForm.reset();
+        photoPreview.classList.add("hidden");
+      } else {
+        uploadMessage.textContent = "No se ha podido subir la foto.";
+        uploadMessage.className = "form-message error";
+        console.log(data);
+      }
+    } catch (error) {
+      uploadMessage.textContent = "Error de conexión al subir la foto.";
+      uploadMessage.className = "form-message error";
+      console.error(error);
+    }
+
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "Subir fotografía";
+  });
+}

@@ -495,28 +495,37 @@ footer p {
    8. MEDIA QUERIES (RESPONSIVE)
    ========================================================================== */
 @media (max-width: 780px) {
-  .menu-btn {
-    display: block;
+
+  .menu-btn{
+    display:block;
   }
 
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 82px;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: rgba(255, 250, 248, 0.96);
-    border: 1px solid var(--borde);
-    padding: 24px;
-    border-radius: 22px;
-    box-shadow: 0 20px 60px rgba(151, 104, 93, 0.12);
+  .nav-links{
+    display:none;
+    position:absolute;
+    top:82px;
+    left:0;
+    right:0;
+
+    flex-direction:column;
+    gap:18px;
+
+    padding:24px;
+    border-radius:20px;
+
+    /* NUEVO ESTILO */
+    background:rgba(30,30,30,.40);   /* 40% de opacidad */
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,.15);
+
+    box-shadow:0 15px 40px rgba(0,0,0,.30);
   }
 
-  .nav-links.show {
-    display: flex;
+  .nav-links.show{
+    display:flex;
   }
-
   .signature-countdown {
     grid-template-columns: repeat(2, 1fr);
   }

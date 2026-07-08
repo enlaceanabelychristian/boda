@@ -615,3 +615,22 @@ footer p {
   border: 1px solid rgba(199, 161, 90, .22);
   white-space: nowrap;
 }
+.hero{
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        rgba(98,45,74,.82) 0%,
+        rgba(130,70,100,.60) 30%,
+        rgba(180,130,155,.25) 60%,
+        rgba(255,255,255,0) 100%
+    );
+    backdrop-filter: blur(3px);
+    pointer-events:none;
+}

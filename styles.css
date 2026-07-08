@@ -510,7 +510,19 @@ footer p {
    8. MEDIA QUERIES (RESPONSIVE)
    ========================================================================== */
 @media (max-width: 780px) {
+.hero {
+    background-image:
+      linear-gradient(
+        to bottom, /* Cambiamos la dirección del degradado a "hacia abajo" para que cubra bien los textos en vertical */
+        rgba(98, 45, 74, 0.95) 0%,
+        rgba(98, 45, 74, 0.7) 40%,
+        rgba(98, 45, 74, 0.2) 75%,
+        rgba(98, 45, 74, 0) 100%
+      ),
+      url("asset/fotos/paris.jpg"); /* <--- Aquí carga tu foto en 9:16 */
 
+    background-position: center center; /* Al ser 9:16, la centramos perfectamente */
+  }
   .menu-btn{
     display:block;
   }

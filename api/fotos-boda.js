@@ -13,8 +13,8 @@ export default async function handler(req, res) {
   const auth = Buffer.from(`${API_KEY}:${API_SECRET}`).toString("base64");
 
   const cloudinaryUrl =
-    `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/resources/image/upload` +
-    `?prefix=boda/evento/&max_results=100&direction=desc`;
+  `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/resources/image/upload` +
+  `?max_results=100&direction=desc`;
 
   try {
     const response = await fetch(cloudinaryUrl, {

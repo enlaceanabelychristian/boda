@@ -303,9 +303,17 @@ bgMusic.volume = 0.8;
 function playTrack(index) {
   bgMusic.src = playlist[index];
   bgMusic.volume = 0.5;
-  bgMusic.play().catch(() => {
-    console.log("El navegador bloqueó el autoplay hasta que pulses el botón.");
-  });
+  bgMusic.play()
+    .then(() => {
+      // Nos aseguramos de que el botón cambie al estado "Sonando"
+      if (musicBtn) {
+        musicBtn.classList.add("playing");
+        musicBtn.textContent = "❚❚";
+      }
+    })
+    .catch(() => {
+      console.log("El navegador bloqueó el cambio de pista hasta una acción del usuario.");
+    });
 }
 
 bgMusic.addEventListener("ended", () => {
@@ -313,8 +321,41 @@ bgMusic.addEventListener("ended", () => {
   playTrack(currentTrack);
 });
 
+// Función para arrancar la música en la primera interacción del usuario
+function arrancarMusicaEnInteraccion() {
+  if (bgMusic.paused) {
+    bgMusic.src = playlist[currentTrack];
+    bgMusic.volume = 0.5;
+    bgMusic.play()
+      .then(() => {
+        if (musicBtn) {
+          musicBtn.classList.add("playing");
+          musicBtn.textContent = "❚❚";
+        }
+        // Una vez que suena, quitamos los escuchadores para que no se vuelva a ejecutar
+        document.removeEventListener("click", arrancarMusicaEnInteraccion);
+        document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
+      })
+      .catch((err) => console.log("Interacción insuficiente para reproducir audio:", err));
+  }
+}
+
+// Intentar reproducir al cargar, y si falla, esperar al primer clic o toque táctil
 window.addEventListener("load", () => {
-  playTrack(currentTrack);
+  bgMusic.src = playlist[currentTrack];
+  bgMusic.volume = 0.5;
+  bgMusic.play()
+    .then(() => {
+      if (musicBtn) {
+        musicBtn.classList.add("playing");
+        musicBtn.textContent = "❚❚";
+      }
+    })
+    .catch(() => {
+      console.log("Autoplay bloqueado. Esperando clic del usuario para activar música...");
+      document.addEventListener("click", arrancarMusicaEnInteraccion);
+      document.addEventListener("touchstart", arrancarMusicaEnInteraccion); // Para móviles
+    });
 });
 
 if (musicBtn) {

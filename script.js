@@ -390,7 +390,6 @@ if (uploadForm) {
         photoPreview.classList.add("hidden");
         
 await cargarFotosCarruselBoda();
-}
       } else {
         uploadMessage.textContent = "No se ha podido subir la foto.";
         uploadMessage.className = "form-message error";

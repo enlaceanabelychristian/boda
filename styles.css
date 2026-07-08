@@ -932,3 +932,13 @@ footer p {
     right: 8px;
   }
 }
+/* Estilos para las nuevas imágenes de las tarjetas */
+.card .card-img {
+  width: 70px;            /* Ajusta el tamaño de la foto (ancho) */
+  height: 70px;           /* Ajusta el tamaño de la foto (alto) */
+  object-fit: cover;      /* Asegura que la imagen no se deforme */
+  border-radius: 50%;     /* Hace la foto completamente redonda */
+  margin: 0 auto 15px auto; /* Centra la imagen y le da espacio abajo */
+  display: block;         /* Permite el correcto centrado con el margen */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Añade un sombreado suave */
+}

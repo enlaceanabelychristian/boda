@@ -947,21 +947,33 @@ footer p {
     right: 8px;
   }
 }
-/* ==========================================================================
-   11. ESTILOS PARA LAS IMÁGENES EN LAS TARJETAS (EVENTOS)
-   ========================================================================== */
-.card .card-img {
-  width: 70px;              /* Ajusta el ancho de la foto */
-  height: 70px;             /* Ajusta el alto de la foto */
-  object-fit: cover;        /* Evita que la imagen se estire o se deforme */
-  border-radius: 50%;       /* Hace la foto perfectamente redonda */
-  margin: 0 auto 16px auto; /* Centra la foto horizontalmente y la separa del título */
-  display: block;           /* Permite aplicar los márgenes auto correctamente */
-  box-shadow: 0 4px 12px rgba(151, 104, 93, 0.15); /* Sombreado suave a juego con la web */
+/* 1. Ajuste en la tarjeta para que la foto respete las esquinas redondeadas */
+.card {
+  position: relative;
+  overflow: hidden; /* Esto recorta la foto para que se adapte a las esquinas de la tarjeta */
+  padding: 0 0 38px 0; /* Quitamos el padding de arriba y los lados para que la foto toque los bordes */
 }
 
-/* Ajuste por si el navegador intenta aplicar estilos antiguos del span a la imagen */
-.card img.card-img {
-  font-size: unset;
-  line-height: unset;
+/* 2. Hacemos que todos los textos de la tarjeta mantengan su margen interno */
+.card h3, 
+.card p {
+  padding: 0 30px; /* Devuelve el espacio limpio a los textos */
+}
+
+/* 3. Estilo para que la foto ocupe todo el espacio superior */
+.card .card-img {
+  width: 100%;             /* Ocupa el 100% del ancho de la tarjeta */
+  height: 200px;           /* Altura fija para las fotos superiores (puedes variarla a tu gusto) */
+  object-fit: cover;       /* Evita que las imágenes se deformen al estirarse */
+  border-radius: 0;        /* Quitamos el diseño redondo anterior */
+  margin: 0 0 20px 0;      /* Elimina el centrado y le da margen solo hacia abajo */
+  display: block;
+  box-shadow: none;        /* El sombreado ya lo gestiona la propia tarjeta */
+}
+
+/* 4. Ajuste para la tercera tarjeta (Detalles) para que el emoticono mantenga su espacio superior */
+.card span {
+  font-size: 34px;
+  display: block;
+  margin: 38px auto 16px auto; /* Le añade el margen superior que perdió la tarjeta */
 }

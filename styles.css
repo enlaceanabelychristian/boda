@@ -514,7 +514,7 @@ footer p {
     border-radius:20px;
 
     /* NUEVO ESTILO */
-    background:rgba(30,30,30,.40);   /* 40% de opacidad */
+    background:rgba(211,167,125,.40);   /* 40% de opacidad */
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
 

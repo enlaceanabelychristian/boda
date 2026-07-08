@@ -56,14 +56,6 @@ body {
   background-repeat: no-repeat;
 }
 
-.hero:before,
-.hero:after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(199, 161, 90, 0.22);
-  pointer-events: none;
-}
 
 .hero:before {
   width: 560px;

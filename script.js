@@ -159,11 +159,6 @@ const autobusSelect = document.getElementById("autobus");
 const formMessage = document.getElementById("formMessage");
 const submitBtn = document.getElementById("submitBtn");
 
-// Elementos de la ventana emergente modal
-const calendarModal = document.getElementById("calendarModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
-const googleCalendarBtn = document.getElementById("googleCalendarBtn");
-
 function toggleExtraFields() {
   const asiste = asisteSelect.value;
   if (asiste === "No") {
@@ -183,20 +178,6 @@ if (asisteSelect) {
 function showMessage(text, type) {
   formMessage.textContent = text;
   formMessage.className = "form-message " + type;
-}
-
-// Lógica de cierre del aviso emergente
-if (closeModalBtn && calendarModal) {
-  closeModalBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    calendarModal.classList.add("hidden");
-  });
-}
-if (googleCalendarBtn && calendarModal) {
-  googleCalendarBtn.addEventListener("click", () => {
-    // Escondemos el aviso una vez hacen clic en agregar para no entorpecer
-    calendarModal.classList.add("hidden");
-  });
 }
 
 if (form) {
@@ -243,11 +224,6 @@ if (form) {
       form.reset();
       toggleExtraFields();
 
-      // DISPARADOR: Si el cliente confirma que SÍ asiste con éxito, abrimos la ventana emergente modal
-      if (asiste === "Sí" && calendarModal) {
-        calendarModal.classList.remove("hidden");
-      }
-
     } catch (error) {
       showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {
@@ -269,7 +245,6 @@ function enviarConfirmacionJSONP(payload) {
 
     const script = document.createElement("script");
 
-    // Añadimos un timestamp (_t) para romper la caché del navegador
     const params = new URLSearchParams({
       callback: callbackName,
       data: JSON.stringify(payload),
@@ -287,13 +262,7 @@ function enviarConfirmacionJSONP(payload) {
     document.body.appendChild(script);
   });
 }
-/* ==========================================================================
-   GESTIÓN DE MÚSICA DE FONDO
-   ========================================================================== */
-// 1. Definimos la lista de canciones y la pista inicial
-/* ==========================================================================
-   GESTIÓN DE MÚSICA CON AUTOPLAY SIMULADO Y BOTÓN DE CONTROL
-   ========================================================================== */
+
 /* ==========================================================================
    GESTIÓN DE MÚSICA CON AUTOPLAY SIMULADO Y MUTE CONFIGURADO
    ========================================================================== */
@@ -311,21 +280,18 @@ const bgMusic = new Audio();
 bgMusic.volume = 0.5;
 bgMusic.src = playlist[currentTrack];
 
-// Función para cambiar visualmente el botón (reproduciendo o pausado)
 function actualizarBotonVisual(reproduciendo) {
   if (!musicBtn) return;
   if (reproduciendo) {
     musicBtn.classList.add("playing");
-    musicBtn.textContent = "❚❚"; // Icono de Pausa
+    musicBtn.textContent = "❚❚"; 
   } else {
     musicBtn.classList.remove("playing");
-    musicBtn.textContent = "♫";   // Icono de Música / Play
+    musicBtn.textContent = "♫";   
   }
 }
 
-// 📱 Función para arrancar la música en el primer toque de la pantalla
 function arrancarMusicaEnInteraccion() {
-  // Quitamos los escuchadores INMEDIATAMENTE para que no se vuelva a ejecutar esta función
   removerEscuchadoresGlobales();
   
   if (bgMusic.paused) {
@@ -344,7 +310,6 @@ function removerEscuchadoresGlobales() {
   document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
 }
 
-// Al cargar la página, preparamos el audio e intentamos reproducir
 window.addEventListener("load", () => {
   bgMusic.load();
   
@@ -353,13 +318,11 @@ window.addEventListener("load", () => {
       actualizarBotonVisual(true);
     })
     .catch(() => {
-      // Si el navegador lo bloquea (normal), escuchamos el primer toque en la pantalla
       document.addEventListener("click", arrancarMusicaEnInteraccion);
       document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
     });
 });
 
-// 🔄 Control del cambio automático al terminar una canción
 bgMusic.addEventListener("ended", () => {
   currentTrack = (currentTrack + 1) % playlist.length;
   bgMusic.src = playlist[currentTrack];
@@ -369,12 +332,11 @@ bgMusic.addEventListener("ended", () => {
     .catch(err => console.log("Error al saltar de pista:", err));
 });
 
-// 🔘 CONTROL DEL BOTÓN: Pausar / Reproducir sin interferencias
 if (musicBtn) {
   const controlarMusicaManual = (e) => {
     e.preventDefault();
-    e.stopPropagation(); // ◄ CRUCIAL: Evita que el clic se propague a la pantalla
-    removerEscuchadoresGlobales(); // ◄ Forzamos a que la pantalla deje de escuchar
+    e.stopPropagation(); 
+    removerEscuchadoresGlobales(); 
 
     if (bgMusic.paused) {
       bgMusic.play()
@@ -386,10 +348,10 @@ if (musicBtn) {
     }
   };
 
-  // Añadimos el control tanto para clic como para toque táctil directo en el botón
   musicBtn.addEventListener("click", controlarMusicaManual);
   musicBtn.addEventListener("touchstart", controlarMusicaManual, { passive: false });
 }
+
 const CLOUD_NAME = "mwbuyheu";
 const UPLOAD_PRESET = "boda_invitados";
 
@@ -449,7 +411,7 @@ if (uploadForm) {
         uploadForm.reset();
         photoPreview.classList.add("hidden");
         
-await cargarFotosCarruselBoda();
+        await cargarFotosCarruselBoda();
       } else {
         uploadMessage.textContent = "No se ha podido subir la foto.";
         uploadMessage.className = "form-message error";

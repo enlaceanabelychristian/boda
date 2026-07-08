@@ -50,7 +50,7 @@ body {
       rgba(98, 45, 74, 0.18) 72%,
       rgba(98, 45, 74, 0) 100%
     ),
-    url("./fondo1.jpeg");
+    url("asset/fotos/fondo1.jpeg");
 
   background-size: cover;
   background-position: 90% center;

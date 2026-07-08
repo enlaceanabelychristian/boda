@@ -50,10 +50,10 @@ body {
       rgba(98, 45, 74, 0.18) 72%,
       rgba(98, 45, 74, 0) 100%
     ),
-    url("asset/fotos/rocio.jpeg");
+    url("asset/fotos/paris.jpeg");
 
   background-size: cover;
-  background-position: 90% center;
+  background-position: 10% center;
   background-repeat: no-repeat;
 }
 

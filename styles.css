@@ -718,55 +718,66 @@ footer p {
 }
 
 /* CARRUSEL FOTOS EVENTO */
+/* ==========================================================================
+   NUEVO CONFIGURACIÓN: SLIDER AUTOMÁTICO 16:9
+   ========================================================================== */
+
+/* Contenedor principal adaptado a proporción 16:9 */
 .event-carousel {
-  margin-top: 42px;
-  width: 100%;
+  margin: 42px auto 0;
+  width: min(750px, 100%); /* Tamaño máximo elegante para fotos 16:9 */
+  aspect-ratio: 16 / 9;    /* Fuerza la relación de aspecto panorámica */
   overflow: hidden;
   border-radius: 34px;
   border: 1px solid rgba(199, 161, 90, 0.24);
   background: rgba(255, 250, 248, 0.82);
   box-shadow: 0 24px 70px rgba(151, 104, 93, 0.10);
+  position: relative;
 }
 
+/* La pista ahora se mueve por bloques enteros gracias a JavaScript */
 .carousel-track {
   display: flex;
-  gap: 20px;
-  padding: 20px;
-  width: max-content;
-  animation: weddingCarousel 55s linear infinite;
+  width: 100%;
+  height: 100%;
+  padding: 0; /* Eliminamos padding para que la foto llene el 16:9 */
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Desplazamiento ultra suave */
 }
 
+/* Desactivamos la animación infinita antigua de CSS */
 .event-carousel:hover .carousel-track {
   animation-play-state: paused;
 }
 
+/* Cada foto ahora ocupa el 100% del contenedor en formato horizontal */
 .carousel-photo {
-  width: 320px;
-  height: 430px;
-  flex: 0 0 auto;
-  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%; /* Cada slide mide exactamente el total del contenedor */
+  border-radius: 0; /* Al ir encajadas, el contenedor padre ya aporta el borde redondeado */
   overflow: hidden;
-  background: white;
-  box-shadow: 0 20px 50px rgba(151, 104, 93, 0.18);
+  background: #3a302d;
   cursor: pointer;
-  transition: transform .25s ease, box-shadow .25s ease;
+  transition: opacity 0.3s ease;
 }
 
 .carousel-photo:hover {
-  transform: scale(1.035);
-  box-shadow: 0 28px 70px rgba(151, 104, 93, 0.25);
+  transform: none; /* Evitamos que se rompa el marco al hacer hover */
+  opacity: 0.95;
 }
 
+/* Forzamos que la imagen cubra perfectamente el espacio 16:9 sin deformarse */
 .carousel-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; 
   display: block;
 }
 
+/* Adaptamos el mensaje de "No hay fotos" al nuevo contenedor horizontal */
 .carousel-placeholder {
-  width: min(650px, 90vw);
-  min-height: 280px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -774,6 +785,7 @@ footer p {
   justify-content: center;
   text-align: center;
   color: var(--dorado);
+  padding: 20px;
 }
 
 .carousel-placeholder span {
@@ -782,7 +794,10 @@ footer p {
 
 .carousel-placeholder p {
   color: var(--gris);
+  font-size: 15px;
 }
+
+/* Eliminamos la animación antigua @keyframes weddingCarousel ya que no se usará */
 
 /* Lightbox ampliar foto */
 .photo-lightbox {

@@ -1,22 +1,15 @@
-// ==========================================================================
-// 1. CONFIGURACIÓN INICIAL Y PARÁMETROS DE SERVIDORES
-// ==========================================================================
+// Al añadir +01:00 al final, fijas la hora exacta de la boda de forma absoluta
 const weddingDate = new Date("2026-10-31T11:30:00+01:00").getTime();
+
 const FOTOS_BODA_ENDPOINT = "https://boda-azure-one.vercel.app/api/fotos-boda";
-
-const CLOUD_NAME = "mwbuyheu";
-const UPLOAD_PRESET = "boda_invitados";
-
 const carouselTrack = document.getElementById("carouselTrack");
+let lightboxZoom = 1;
 
+// VARIABLES DEL SLIDER AUTOMÁTICO + MANUAL
 let sliderIndex = 0;
 let sliderInterval = null;
 let totalSlides = 0;
-let lightboxZoom = 1;
 
-// ==========================================================================
-// 2. MOTOR DEL CARRUSEL PLANO (AUTOMÁTICO + MANUAL)
-// ==========================================================================
 function moverSlider(direccion) {
   const slides = document.querySelectorAll(".carousel-photo");
   totalSlides = slides.length;
@@ -24,12 +17,17 @@ function moverSlider(direccion) {
 
   if (direccion === "next") {
     sliderIndex++;
-    if (sliderIndex >= totalSlides) sliderIndex = 0;
+    if (sliderIndex >= totalSlides) {
+      sliderIndex = 0; // Vuelve al principio
+    }
   } else if (direccion === "prev") {
     sliderIndex--;
-    if (sliderIndex < 0) sliderIndex = totalSlides - 1;
+    if (sliderIndex < 0) {
+      sliderIndex = totalSlides - 1; // Va a la última foto
+    }
   }
 
+  // Mueve la pista horizontalmente respetando tu estructura plana
   carouselTrack.style.transform = `translateX(-${sliderIndex * 100}%)`;
 }
 
@@ -40,6 +38,7 @@ function inicializarSliderAutomatico() {
   if (sliderInterval) clearInterval(sliderInterval);
   if (totalSlides <= 1 || !carouselTrack) return;
 
+  // Sigue yendo automático cada 4 segundos
   sliderInterval = setInterval(() => {
     moverSlider("next");
   }, 4000);
@@ -51,153 +50,27 @@ function configurarFlechasManuales() {
 
   if (!prevBtn || !nextBtn) return;
 
+  // Clonamos para limpiar eventos anteriores y que no se acelere
   const newPrev = prevBtn.cloneNode(true);
   const newNext = nextBtn.cloneNode(true);
   prevBtn.parentNode.replaceChild(newPrev, prevBtn);
   nextBtn.parentNode.replaceChild(newNext, nextBtn);
 
   newPrev.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
     moverSlider("prev");
-    inicializarSliderAutomatico(); // Reiniciar contador
+    inicializarSliderAutomatico(); // Reinicia el tiempo para que no salte rápido
   });
 
   newNext.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
     moverSlider("next");
-    inicializarSliderAutomatico(); // Reiniciar contador
+    inicializarSliderAutomatico(); // Reinicia el tiempo para que no salte rápido
   });
 }
 
-async function cargarFotosCarruselBoda() {
-  if (!carouselTrack) return;
-
-  try {
-    const response = await fetch(FOTOS_BODA_ENDPOINT + "?t=" + Date.now());
-    const data = await response.json();
-
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-
-    if (!data.ok || !Array.isArray(data.fotos) || data.fotos.length === 0) {
-      carouselTrack.style.transform = "none";
-      carouselTrack.innerHTML = `
-        <div class="carousel-placeholder">
-          <span>📸</span>
-          <p>Aquí aparecerán las fotos que suban los invitados</p>
-        </div>
-      `;
-      if (prevBtn) prevBtn.style.display = "none";
-      if (nextBtn) nextBtn.style.display = "none";
-      if (sliderInterval) clearInterval(sliderInterval);
-      return;
-    }
-
-    if (prevBtn) prevBtn.style.display = data.fotos.length > 1 ? "flex" : "none";
-    if (nextBtn) nextBtn.style.display = data.fotos.length > 1 ? "flex" : "none";
-
-    carouselTrack.innerHTML = data.fotos.map((foto) => `
-      <div class="carousel-photo" data-img="${foto.url}">
-        <img src="${foto.url}" alt="Foto de boda" loading="lazy">
-      </div>
-    `).join("");
-
-    document.querySelectorAll(".carousel-photo").forEach((card) => {
-      card.addEventListener("click", () => {
-        abrirLightbox(card.dataset.img);
-      });
-    });
-
-    configurarFlechasManuales();
-    inicializarSliderAutomatico();
-
-  } catch (error) {
-    console.error("Error al leer de Vercel:", error);
-  }
-}
-
-// Carga pasiva inicial y refresco cada 30 segundos
-cargarFotosCarruselBoda();
-setInterval(cargarFotosCarruselBoda, 30000);
-
-// ==========================================================================
-// 3. ENTRADA DE DATOS: SUBIDA DIRECTA A CLOUDINARY
-// ==========================================================================
-const uploadForm = document.getElementById("uploadPhotoForm");
-const eventPhoto = document.getElementById("eventPhoto");
-const photoPreview = document.getElementById("photoPreview");
-const uploadMessage = document.getElementById("uploadMessage");
-const uploadBtn = document.getElementById("uploadBtn");
-
-if (eventPhoto) {
-  eventPhoto.addEventListener("change", () => {
-    const file = eventPhoto.files[0];
-    if (!file) return;
-
-    photoPreview.src = URL.createObjectURL(file);
-    photoPreview.classList.remove("hidden");
-    if (uploadMessage) {
-      uploadMessage.textContent = "";
-      uploadMessage.className = "form-message";
-    }
-  });
-}
-
-if (uploadForm) {
-  uploadForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const file = eventPhoto.files[0];
-
-    if (!file) {
-      showMessageSubida("Selecciona una foto primero.", "error");
-      return;
-    }
-
-    uploadBtn.disabled = true;
-    uploadBtn.textContent = "Subiendo...";
-    showMessageSubida("Subiendo foto, espera unos segundos...", "");
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
-    formData.append("public_id_prefix", "fotos-evento");
-
-    try {
-      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (data.secure_url) {
-        showMessageSubida("✅ Foto subida correctamente. ¡Gracias por compartir!", "success");
-        uploadForm.reset();
-        photoPreview.classList.add("hidden");
-        
-        sliderIndex = 0;
-        await cargarFotosCarruselBoda();
-      } else {
-        showMessageSubida("No se ha podido subir la foto.", "error");
-      }
-    } catch (error) {
-      showMessageSubida("Error de red al conectar con Cloudinary.", "error");
-    }
-
-    uploadBtn.disabled = false;
-    uploadBtn.textContent = "Subir fotografía";
-  });
-}
-
-function showMessageSubida(text, type) {
-  if (!uploadMessage) return;
-  uploadMessage.textContent = text;
-  uploadMessage.className = "form-message " + type;
-}
-
-// ==========================================================================
-// 4. SISTEMA DE VISUALIZACIÓN LIGHTBOX (ZOOM + DESCARGA)
-// ==========================================================================
 function crearLightboxFotos() {
   if (document.getElementById("photoLightbox")) return;
 
@@ -208,14 +81,16 @@ function crearLightboxFotos() {
   lightbox.innerHTML = `
     <div class="lightbox-inner">
       <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">×</button>
+
       <div class="lightbox-img-wrap">
-        <img id="lightboxImg" class="lightbox-img" src="" alt="Ampliada">
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Foto ampliada">
       </div>
+
       <div class="lightbox-actions">
         <button class="lightbox-btn" id="zoomOutBtn">− Reducir</button>
         <button class="lightbox-btn" id="zoomResetBtn">Tamaño normal</button>
         <button class="lightbox-btn" id="zoomInBtn">+ Ampliar</button>
-        <a class="lightbox-btn download-btn" id="lightboxDownload" target="_blank" rel="noopener">📥 Descargar</a>
+        <a class="lightbox-btn" id="lightboxDownload" target="_blank" rel="noopener" style="text-decoration:none; display:inline-flex; align-items:center;">📥 Descargar</a>
       </div>
     </div>
   `;
@@ -249,7 +124,7 @@ function abrirLightbox(src) {
 
   if (downloadBtn) {
     downloadBtn.href = src;
-    downloadBtn.download = `boda_${Date.now()}.jpg`;
+    downloadBtn.download = `boda_recuerdo_${Date.now()}.jpg`;
   }
 
   lightbox.classList.add("show");
@@ -271,6 +146,7 @@ function cerrarLightbox() {
 function cambiarZoom(valor) {
   const img = document.getElementById("lightboxImg");
   if (!img) return;
+
   lightboxZoom = Math.min(3, Math.max(0.5, lightboxZoom + valor));
   img.style.transform = `scale(${lightboxZoom})`;
 }
@@ -278,13 +154,64 @@ function cambiarZoom(valor) {
 function resetZoom() {
   const img = document.getElementById("lightboxImg");
   if (!img) return;
+
   lightboxZoom = 1;
   img.style.transform = `scale(${lightboxZoom})`;
 }
 
-// ==========================================================================
-// 5. CUENTA ATRÁS (COUNTDOWN)
-// ==========================================================================
+async function cargarFotosCarruselBoda() {
+  if (!carouselTrack) return;
+
+  try {
+    const response = await fetch(FOTOS_BODA_ENDPOINT + "?t=" + Date.now());
+    const data = await response.json();
+
+    console.log("Fotos recibidas:", data);
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (!data.ok || !Array.isArray(data.fotos) || data.fotos.length === 0) {
+      carouselTrack.innerHTML = `
+        <div class="carousel-placeholder">
+          <span>📸</span>
+          <p>Aquí aparecerán las fotos que suban los invitados</p>
+        </div>
+      `;
+      if (prevBtn) prevBtn.style.display = "none";
+      if (nextBtn) nextBtn.style.display = "none";
+      if (sliderInterval) clearInterval(sliderInterval);
+      return;
+    }
+
+    // Quitamos la triplicación antigua para que funcione el slider limpio de 1 en 1
+    carouselTrack.innerHTML = data.fotos.map((foto) => `
+      <div class="carousel-photo" data-img="${foto.url}">
+        <img src="${foto.url}" alt="Foto subida por invitados">
+      </div>
+    `).join("");
+
+    document.querySelectorAll(".carousel-photo").forEach((card) => {
+      card.addEventListener("click", () => {
+        abrirLightbox(card.dataset.img);
+      });
+    });
+
+    // Mostramos u ocultamos flechas según la cantidad de fotos
+    if (prevBtn) prevBtn.style.display = data.fotos.length > 1 ? "block" : "none";
+    if (nextBtn) nextBtn.style.display = data.fotos.length > 1 ? "block" : "none";
+
+    configurarFlechasManuales();
+    inicializarSliderAutomatico();
+
+  } catch (error) {
+    console.error("Error cargando fotos del carrusel:", error);
+  }
+}
+
+cargarFotosCarruselBoda();
+setInterval(cargarFotosCarruselBoda, 30000);
+
 function updateCountdown() {
   const countdown = document.getElementById("countdown");
   if (!countdown) return;
@@ -305,9 +232,16 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ==========================================================================
-// 6. FORMULARIO RSVP (JSONP)
-// ==========================================================================
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+if (menuBtn && navLinks) {
+  menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => navLinks.classList.remove("show"));
+  });
+}
+
 const form = document.getElementById("rsvpForm");
 const asisteSelect = document.getElementById("asiste");
 const extraFields = document.getElementById("extraFields");
@@ -316,7 +250,6 @@ const formMessage = document.getElementById("formMessage");
 const submitBtn = document.getElementById("submitBtn");
 
 function toggleExtraFields() {
-  if (!asisteSelect || !extraFields || !autobusSelect) return;
   const asiste = asisteSelect.value;
   if (asiste === "No") {
     extraFields.classList.add("hidden");
@@ -333,7 +266,6 @@ if (asisteSelect) {
 }
 
 function showMessage(text, type) {
-  if (!formMessage) return;
   formMessage.textContent = text;
   formMessage.className = "form-message " + type;
 }
@@ -355,22 +287,35 @@ if (form) {
     };
 
     if (!payload.nombre || !payload.apellidos || !payload.asiste) {
-      showMessage("Por favor, completa los campos requeridos.", "error");
+      showMessage("Por favor, completa nombre, apellidos y asistencia.", "error");
       return;
+    }
+
+    if (payload.asiste === "Sí") {
+      if (!payload.autobus) {
+        showMessage("Indica si necesitas autobús.", "error");
+        return;
+      }
     }
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
+    showMessage("", "");
 
     try {
       const response = await enviarConfirmacionJSONP(payload);
-      if (!response.ok) throw new Error();
+
+      if (!response.ok) {
+        throw new Error(response.error || "No se ha podido guardar la confirmación.");
+      }
 
       showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
+      
       form.reset();
       toggleExtraFields();
+
     } catch (error) {
-      showMessage("No se ha podido enviar. Inténtalo de nuevo.", "error");
+      showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = "Enviar confirmación";
@@ -389,6 +334,7 @@ function enviarConfirmacionJSONP(payload) {
     };
 
     const script = document.createElement("script");
+
     const params = new URLSearchParams({
       callback: callbackName,
       data: JSON.stringify(payload),
@@ -396,20 +342,22 @@ function enviarConfirmacionJSONP(payload) {
     });
 
     script.src = window.RSVP_ENDPOINT + "?" + params.toString();
-    script.onerror = () => {
+
+    script.onerror = function() {
       delete window[callbackName];
       script.remove();
-      reject();
+      reject(new Error("Error conectando con Google Sheets."));
     };
 
     document.body.appendChild(script);
   });
 }
 
-// ==========================================================================
-// 7. REPRODUCTOR DE MÚSICA
-// ==========================================================================
+/* ==========================================================================
+   GESTIÓN DE MÚSICA CON AUTOPLAY SIMULADO Y MUTE CONFIGURADO
+   ========================================================================== */
 const musicBtn = document.getElementById("musicBtn");
+
 const playlist = [
   "asset/music/song.mp3?v=3",
   "asset/music/song1.mp3?v=3",
@@ -417,45 +365,152 @@ const playlist = [
   "asset/music/song4.mp3?v=3"
 ];
 let currentTrack = 0;
+
 const bgMusic = new Audio();
 bgMusic.volume = 0.5;
 bgMusic.src = playlist[currentTrack];
 
 function actualizarBotonVisual(reproduciendo) {
   if (!musicBtn) return;
-  musicBtn.textContent = reproduciendo ? "❚❚" : "♫";
+  if (reproduciendo) {
+    musicBtn.classList.add("playing");
+    musicBtn.textContent = "❚❚"; 
+  } else {
+    musicBtn.classList.remove("playing");
+    musicBtn.textContent = "♫";   
+  }
 }
 
 function arrancarMusicaEnInteraccion() {
+  removerEscuchadoresGlobales();
+  
+  if (bgMusic.paused) {
+    bgMusic.play()
+      .then(() => {
+        actualizarBotonVisual(true);
+      })
+      .catch((err) => {
+        console.log("El navegador bloqueó el audio en pantalla:", err);
+      });
+  }
+}
+
+function removerEscuchadoresGlobales() {
   document.removeEventListener("click", arrancarMusicaEnInteraccion);
   document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
-  if (bgMusic.paused) {
-    bgMusic.play().then(() => actualizarBotonVisual(true)).catch(() => {});
-  }
 }
 
 window.addEventListener("load", () => {
   bgMusic.load();
-  bgMusic.play().then(() => actualizarBotonVisual(true)).catch(() => {
-    document.addEventListener("click", arrancarMusicaEnInteraccion);
-    document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
-  });
+  
+  bgMusic.play()
+    .then(() => {
+      actualizarBotonVisual(true);
+    })
+    .catch(() => {
+      document.addEventListener("click", arrancarMusicaEnInteraccion);
+      document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
+    });
 });
 
 bgMusic.addEventListener("ended", () => {
   currentTrack = (currentTrack + 1) % playlist.length;
   bgMusic.src = playlist[currentTrack];
   bgMusic.load();
-  bgMusic.play().then(() => actualizarBotonVisual(true));
+  bgMusic.play()
+    .then(() => actualizarBotonVisual(true))
+    .catch(err => console.log("Error al saltar de pista:", err));
 });
 
 if (musicBtn) {
-  musicBtn.addEventListener("click", () => {
+  const controlarMusicaManual = (e) => {
+    e.preventDefault();
+    e.stopPropagation(); 
+    removerEscuchadoresGlobales(); 
+
     if (bgMusic.paused) {
-      bgMusic.play().then(() => actualizarBotonVisual(true));
+      bgMusic.play()
+        .then(() => actualizarBotonVisual(true))
+        .catch(err => console.error("Error al dar Play manual:", err));
     } else {
       bgMusic.pause();
       actualizarBotonVisual(false);
     }
+  };
+
+  musicBtn.addEventListener("click", controlarMusicaManual);
+  musicBtn.addEventListener("touchstart", controlarMusicaManual, { passive: false });
+}
+
+const uploadForm = document.getElementById("uploadPhotoForm");
+const eventPhoto = document.getElementById("eventPhoto");
+const photoPreview = document.getElementById("photoPreview");
+const uploadMessage = document.getElementById("uploadMessage");
+const uploadBtn = document.getElementById("uploadBtn");
+
+if (eventPhoto) {
+  eventPhoto.addEventListener("change", () => {
+    const file = eventPhoto.files[0];
+
+    if (!file) return;
+
+    photoPreview.src = URL.createObjectURL(file);
+    photoPreview.classList.remove("hidden");
+    uploadMessage.textContent = "";
+    uploadMessage.className = "form-message";
+  });
+}
+
+if (uploadForm) {
+  uploadForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = eventPhoto.files[0];
+
+    if (!file) {
+      uploadMessage.textContent = "Selecciona una foto primero.";
+      uploadMessage.className = "form-message error";
+      return;
+    }
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = "Subiendo...";
+    uploadMessage.textContent = "Subiendo foto, espera unos segundos...";
+    uploadMessage.className = "form-message";
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("public_id_prefix", "fotos-evento");
+
+    try {
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.secure_url) {
+        uploadMessage.textContent = "✅ Foto subida correctamente. ¡Gracias por compartir este recuerdo!";
+        uploadMessage.className = "form-message success";
+        uploadForm.reset();
+        photoPreview.classList.add("hidden");
+        
+        sliderIndex = 0;
+        await cargarFotosCarruselBoda();
+      } else {
+        uploadMessage.textContent = "No se ha podido subir la foto.";
+        uploadMessage.className = "form-message error";
+        console.log(data);
+      }
+    } catch (error) {
+      uploadMessage.textContent = "Error de conexión al subir la foto.";
+      uploadMessage.className = "form-message error";
+      console.error(error);
+    }
+
+    uploadBtn.disabled = false;
+    uploadBtn.textContent = "Subir fotografía";
   });
 }

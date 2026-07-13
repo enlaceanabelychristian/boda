@@ -1,186 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anabel & Christian</title>
-  <meta name="description" content="Web de la boda de Anabel y Christian" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuestra Boda</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-<header class="hero" id="inicio">
-  <nav class="nav">
-    <div class="brand">A & C</div>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
-    <div class="nav-links" id="navLinks">
-      <a href="#inicio">Inicio</a>
-      <a href="#galeria">Fotos</a>
-      <a href="#evento">Evento</a>
-      <a href="#subir-foto">Subir Foto</a>
-      <a href="#confirmar">Confirmar</a>
+
+  <button id="musicBtn" class="music-btn" aria-label="Controlar música">♫</button>
+
+  <header class="hero-section">
+    <h1>¡Nos Casamos!</h1>
+    <div id="countdown" class="countdown-container">
+      <div><strong id="days">00</strong><span>Días</span></div>
+      <div><strong id="hours">00</strong><span>Horas</span></div>
+      <div><strong id="minutes">00</strong><span>Minutos</span></div>
+      <div><strong id="seconds">00</strong><span>Segundos</span></div>
     </div>
-  </nav>
+  </header>
 
-  <section class="hero-content">
-    <p class="hero-overline">Nuestra boda</p>
-    <h1>Anabel & Christian</h1>
-    <p class="date">Muy pronto celebraremos nuestro gran día</p>
+  <section class="gallery-section">
+    <h2>Álbum en Vivo de los Invitados</h2>
+    
+    <div class="event-carousel">
+      <button class="carousel-arrow prev" id="prevBtn" aria-label="Anterior">❮</button>
+      <button class="carousel-arrow next" id="nextBtn" aria-label="Siguiente">❯</button>
 
-    <div class="signature-countdown" id="countdown">
-      <div><strong id="days">00</strong><span>días</span></div>
-      <div><strong id="hours">00</strong><span>horas</span></div>
-      <div><strong id="minutes">00</strong><span>minutos</span></div>
-      <div><strong id="seconds">00</strong><span>segundos</span></div>
-    </div>
-
-    <a class="btn" href="#confirmar">Confirmar asistencia</a>
-  </section>
-</header>
-
-<main>
-  <section class="section intro">
-    <p class="overline">Con mucho amor</p>
-    <h2>Queremos compartir este día contigo</h2>
-    <p>
-      Hay momentos que se viven una sola vez, pero se recuerdan para siempre.
-      Nos hace muchísima ilusión celebrar este día rodeados de nuestra familia y amigos.
-    </p>
-  </section>
-
-  <section id="galeria" class="section gallery-section">
-    <p class="overline">Recuerdos</p>
-    <h2>Fotos del Momento</h2>
-    <p class="gallery-text">Espacios preparados para añadir vuestras fotos favoritas.</p>
-
-    <div class="event-carousel" id="eventCarousel">
       <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-placeholder">
-          <span>📸</span>
-          <p>Aquí aparecerán las fotos que suban los invitados</p>
+        </div>
+    </div>
+
+    <div class="upload-container">
+      <h3>¿Tienes fotos del momento? ¡Súbelas aquí!</h3>
+      <form id="uploadPhotoForm">
+        <label for="eventPhoto" class="custom-file-upload">Seleccionar Fotografía</label>
+        <input type="file" id="eventPhoto" accept="image/*">
+        
+        <div class="preview-box">
+          <img id="photoPreview" src="" alt="Vista previa" class="hidden">
+        </div>
+
+        <button type="submit" id="uploadBtn">Subir fotografía</button>
+      </form>
+      <div id="uploadMessage" class="form-message"></div>
+    </div>
+  </section>
+
+  <section class="rsvp-section">
+    <h2>Confirmación de Asistencia</h2>
+    <form id="rsvpForm">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="apellidos">Apellidos:</label>
+        <input type="text" id="apellidos" name="apellidos" required>
+      </div>
+
+      <div class="form-group">
+        <label for="asiste">¿Asistirás a la boda?</label>
+        <select id="asiste" name="asiste" required>
+          <option value="" disabled selected>Selecciona una opción</option>
+          <option value="Sí">Sí, ¡allí estaré!</option>
+          <option value="No">No, me es imposible</option>
+        </select>
+      </div>
+
+      <div id="extraFields" class="hidden">
+        <div class="form-group">
+          <label for="telefono">Teléfono de contacto:</label>
+          <input type="tel" id="telefono" name="telefono">
+        </div>
+
+        <div class="form-group">
+          <label for="alergias">Alergias o restricciones alimentarias:</label>
+          <input type="text" id="alergias" name="alergias" placeholder="Ej: Celíaco, Vegano, sin frutos secos...">
+        </div>
+
+        <div class="form-group">
+          <label for="autobus">¿Necesitas plaza en el autobús?</label>
+          <select id="autobus" name="autobus">
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="Sí">Sí</option>
+            <option value="No">No</option>
+          </select>
         </div>
       </div>
-    </div>
+
+      <button type="submit" id="submitBtn">Enviar confirmación</button>
+      <div id="formMessage" class="form-message"></div>
+    </form>
   </section>
 
-  <section id="evento" class="section cards">
-    <article class="card">
-      <img src="asset/fotos/iglesia.png" alt="Ceremonia" class="card-img">
-      <h3>Ceremonia</h3>
-      <p><strong>Hora:</strong> 11:30</p>
-      <p><strong>Lugar:</strong> Iglesia Ntra. Sra. del Carmen</p>
-      <p> Gibraleón</p>
-    </article>
-
-    <article class="card">
-      <img src="asset/fotos/hacienda.png" alt="Celebración" class="card-img">
-      <h3>Celebración</h3>
-      <p><strong>Hora:</strong> 13:00</p>
-      <p><strong>Lugar:</strong> Hacienda Ballemari</p>
-    </article>
-
-    <article class="card">
-      <img src="asset/fotos/bus.png" alt="Horarios" class="card-img">
-      <h3>Horarios</h3>
-      <p>Pnte de rellenar</p>
-    </article>
-  </section>
-
-  <section id="subir-foto" class="section upload-section">
-    <div class="upload-card">
-      <p class="overline">Fotos del evento</p>
-      <h2>Sube tu recuerdo</h2>
-      <p class="upload-intro">
-        Comparte con nosotros las fotos que hagas durante la boda.
-      </p>
-
-      <form id="uploadPhotoForm" class="upload-form">
-        <label class="upload-box">
-          <span>📸</span>
-          <strong>Seleccionar foto</strong>
-          <small>JPG, PNG o WEBP</small>
-          <input type="file" id="eventPhoto" accept="image/*" required>
-        </label>
-
-        <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
-
-        <button type="submit" class="btn submit-btn" id="uploadBtn">
-          Subir fotografía
-        </button>
-
-        <p id="uploadMessage" class="form-message"></p>
-      </form>
-    </div>
-  </section>
-
-  <section id="confirmar" class="section rsvp">
-    <div class="rsvp-card">
-      <p class="overline">Confirmación</p>
-      <h2>Confirma tu asistencia</h2>
-      <p class="rsvp-intro">Nos ayudará muchísimo saber si podremos contar contigo en nuestro día.</p>
-
-      <form id="rsvpForm" class="wedding-form">
-        <div class="form-grid">
-          <label>
-            Nombre *
-            <input type="text" name="nombre" required placeholder="Tu nombre">
-          </label>
-
-          <label>
-            Apellidos *
-            <input type="text" name="apellidos" required placeholder="Tus apellidos">
-          </label>
-
-          <label class="full">
-            ¿Asistirás? *
-            <select name="asiste" id="asiste" required>
-              <option value="">Selecciona una opción</option>
-              <option value="Sí">Sí, asistiré</option>
-              <option value="No">No podré asistir</option>
-            </select>
-          </label>
-
-          <div id="extraFields" class="extra-fields full">
-            <label class="full">
-              Teléfono *
-              <input type="tel" name="telefono" placeholder="Tu número de teléfono (Ej: 600123456)">
-            </label>
-
-            <label class="full">
-              ¿Necesitas autobús? *
-              <select name="autobus" id="autobus">
-                <option value="">Selecciona una opción</option>
-                <option value="Sí">Sí</option>
-                <option value="No">No</option>
-              </select>
-            </label>
-
-            <label class="full">
-              Alergias o intolerancias
-              <textarea name="alergias" rows="4" placeholder="Indica alergias, intolerancias o escribe Ninguna"></textarea>
-            </label>
-          </div>
-        </div>
-
-        <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
-        <p id="formMessage" class="form-message"></p>
-      </form>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <p>Anabel & Christian</p>
-</footer>
-
-<script>window.RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxbDP-UtQ1Q5a4PODeiXlZ8AJRgWaV4QelvdMZoC8sWLbzbPHVZffE5zZTZIwhiPBg/exec";</script>
-  
-<button id="musicBtn" class="music-btn" aria-label="Activar o desactivar música">
-  ♫
-</button>
-<script src="script.js"></script>
+  <script>
+    window.RSVP_ENDPOINT = "TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUÍ";
+  </script>
+  <script src="script.js"></script>
 </body>
 </html>

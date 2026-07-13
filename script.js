@@ -1,81 +1,83 @@
 // ==========================================================================
 // 1. CONFIGURACIÓN INICIAL Y PARÁMETROS DE SERVIDORES
 // ==========================================================================
-
-// Al añadir +01:00 al final, fijas la hora exacta de la boda de forma absoluta
 const weddingDate = new Date("2026-10-31T11:30:00+01:00").getTime();
-
-// 🌐 ENDPOINT DE LECTURA (Tu API en Vercel)
 const FOTOS_BODA_ENDPOINT = "https://boda-azure-one.vercel.app/api/fotos-boda";
 
-// ☁️ CREDENCIALES DE SUBIDA DIRECTA (Tu cuenta de Cloudinary)
 const CLOUD_NAME = "mwbuyheu";
 const UPLOAD_PRESET = "boda_invitados";
 
-// Nodos del DOM principales
 const carouselTrack = document.getElementById("carouselTrack");
 
-// Variables globales de control para el carrusel 3D y Lightbox
 let sliderIndex = 0;
 let sliderInterval = null;
 let totalSlides = 0;
 let lightboxZoom = 1;
 
+// ==========================================================================
+// 2. MOTOR DEL CARRUSEL PLANO (AUTOMÁTICO + MANUAL)
+// ==========================================================================
+function moverSlider(direccion) {
+  const slides = document.querySelectorAll(".carousel-photo");
+  totalSlides = slides.length;
+  if (totalSlides <= 1 || !carouselTrack) return;
 
-// ==========================================================================
-// 2. MOTOR DEL CARRUSEL 3D (PERSPECTIVA Y ROTACIÓN)
-// ==========================================================================
+  if (direccion === "next") {
+    sliderIndex++;
+    if (sliderIndex >= totalSlides) sliderIndex = 0;
+  } else if (direccion === "prev") {
+    sliderIndex--;
+    if (sliderIndex < 0) sliderIndex = totalSlides - 1;
+  }
+
+  carouselTrack.style.transform = `translateX(-${sliderIndex * 100}%)`;
+}
 
 function inicializarSliderAutomatico() {
   const slides = document.querySelectorAll(".carousel-photo");
   totalSlides = slides.length;
 
-  // Limpiamos intervalos previos para evitar aceleraciones erráticas
   if (sliderInterval) clearInterval(sliderInterval);
-  if (totalSlides === 0 || !carouselTrack) return;
+  if (totalSlides <= 1 || !carouselTrack) return;
 
-  // Cálculo geométrico espacial del cilindro 3D
-  const angleTheta = 360 / totalSlides; // Ángulo por cada foto
-  const width = carouselTrack.offsetWidth || 600; // Ancho del contenedor
-  // Trigonometría para obtener el radio de profundidad en el eje Z
-  const tz = Math.round((width / 2) / Math.tan(Math.PI / totalSlides));
-
-  // Distribuir de forma equidistante las imágenes en el círculo 3D
-  slides.forEach((slide, i) => {
-    const angle = angleTheta * i;
-    slide.style.transform = `rotateY(${angle}deg) translateZ(${tz}px)`;
-    // Atenuación de brillo inicial para enfocar la primera imagen
-    slide.style.filter = i === 0 ? "brightness(1)" : "brightness(0.6)";
-  });
-
-  if (totalSlides <= 1) return;
-
-  // Intervalo de rotación automático hacia la izquierda (paso de derecha a izquierda)
   sliderInterval = setInterval(() => {
-    sliderIndex++;
-    
-    const currentAngle = -angleTheta * sliderIndex;
-    // Aplicamos traslación negativa en Z para mantener el eje del pivote en su sitio al rotar
-    carouselTrack.style.transform = `translateZ(-${tz}px) rotateY(${currentAngle}deg)`;
-
-    // Iluminar dinámicamente solo el slide que queda de frente al usuario
-    slides.forEach((slide, i) => {
-      const activeIndex = ((sliderIndex % totalSlides) + totalSlides) % totalSlides;
-      slide.style.filter = i === activeIndex ? "brightness(1)" : "brightness(0.5)";
-    });
+    moverSlider("next");
   }, 4000);
 }
 
-// Conexión de lectura con tu API de Vercel
+function configurarFlechasManuales() {
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  if (!prevBtn || !nextBtn) return;
+
+  const newPrev = prevBtn.cloneNode(true);
+  const newNext = nextBtn.cloneNode(true);
+  prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+  nextBtn.parentNode.replaceChild(newNext, nextBtn);
+
+  newPrev.addEventListener("click", (e) => {
+    e.stopPropagation();
+    moverSlider("prev");
+    inicializarSliderAutomatico(); // Reiniciar contador
+  });
+
+  newNext.addEventListener("click", (e) => {
+    e.stopPropagation();
+    moverSlider("next");
+    inicializarSliderAutomatico(); // Reiniciar contador
+  });
+}
+
 async function cargarFotosCarruselBoda() {
   if (!carouselTrack) return;
 
   try {
-    // Rompemos caché agregando el timestamp de la petición
     const response = await fetch(FOTOS_BODA_ENDPOINT + "?t=" + Date.now());
     const data = await response.json();
 
-    console.log("Fotos recibidas de Vercel:", data);
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
     if (!data.ok || !Array.isArray(data.fotos) || data.fotos.length === 0) {
       carouselTrack.style.transform = "none";
@@ -85,41 +87,42 @@ async function cargarFotosCarruselBoda() {
           <p>Aquí aparecerán las fotos que suban los invitados</p>
         </div>
       `;
+      if (prevBtn) prevBtn.style.display = "none";
+      if (nextBtn) nextBtn.style.display = "none";
       if (sliderInterval) clearInterval(sliderInterval);
       return;
     }
 
-    // Inyectamos las fotos en el DOM de forma limpia (una por cada elemento real)
+    if (prevBtn) prevBtn.style.display = data.fotos.length > 1 ? "flex" : "none";
+    if (nextBtn) nextBtn.style.display = data.fotos.length > 1 ? "flex" : "none";
+
     carouselTrack.innerHTML = data.fotos.map((foto) => `
       <div class="carousel-photo" data-img="${foto.url}">
-        <img src="${foto.url}" alt="Foto subida por invitados" loading="lazy">
+        <img src="${foto.url}" alt="Foto de boda" loading="lazy">
       </div>
     `).join("");
 
-    // Vinculamos los eventos para abrir el visor interactivo
     document.querySelectorAll(".carousel-photo").forEach((card) => {
       card.addEventListener("click", () => {
         abrirLightbox(card.dataset.img);
       });
     });
 
-    // Pequeño retardo de renderizado para asegurar los cálculos tridimensionales
-    setTimeout(inicializarSliderAutomatico, 100);
+    configurarFlechasManuales();
+    inicializarSliderAutomatico();
 
   } catch (error) {
-    console.error("Error cargando fotos desde el servidor Vercel:", error);
+    console.error("Error al leer de Vercel:", error);
   }
 }
 
-// Inicialización automática y refresco pasivo en segundo plano cada 30 segundos
+// Carga pasiva inicial y refresco cada 30 segundos
 cargarFotosCarruselBoda();
 setInterval(cargarFotosCarruselBoda, 30000);
-
 
 // ==========================================================================
 // 3. ENTRADA DE DATOS: SUBIDA DIRECTA A CLOUDINARY
 // ==========================================================================
-
 const uploadForm = document.getElementById("uploadPhotoForm");
 const eventPhoto = document.getElementById("eventPhoto");
 const photoPreview = document.getElementById("photoPreview");
@@ -154,7 +157,6 @@ if (uploadForm) {
     uploadBtn.textContent = "Subiendo...";
     showMessageSubida("Subiendo foto, espera unos segundos...", "");
 
-    // Construcción del paquete multipart/form-data para Cloudinary
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
@@ -169,20 +171,17 @@ if (uploadForm) {
       const data = await response.json();
 
       if (data.secure_url) {
-        showMessageSubida("✅ Foto subida correctamente. ¡Gracias por compartir este recuerdo!", "success");
+        showMessageSubida("✅ Foto subida correctamente. ¡Gracias por compartir!", "success");
         uploadForm.reset();
         photoPreview.classList.add("hidden");
         
-        // Sincronización inmediata: reiniciamos el índice de la rotación y refrescamos desde Vercel
         sliderIndex = 0;
         await cargarFotosCarruselBoda();
       } else {
-        showMessageSubida("No se ha podido procesar la subida en la nube.", "error");
-        console.error("Respuesta fallida de Cloudinary:", data);
+        showMessageSubida("No se ha podido subir la foto.", "error");
       }
     } catch (error) {
-      showMessageSubida("Error de red o conexión al procesar la imagen.", "error");
-      console.error(error);
+      showMessageSubida("Error de red al conectar con Cloudinary.", "error");
     }
 
     uploadBtn.disabled = false;
@@ -196,11 +195,9 @@ function showMessageSubida(text, type) {
   uploadMessage.className = "form-message " + type;
 }
 
-
 // ==========================================================================
 // 4. SISTEMA DE VISUALIZACIÓN LIGHTBOX (ZOOM + DESCARGA)
 // ==========================================================================
-
 function crearLightboxFotos() {
   if (document.getElementById("photoLightbox")) return;
 
@@ -212,7 +209,7 @@ function crearLightboxFotos() {
     <div class="lightbox-inner">
       <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">×</button>
       <div class="lightbox-img-wrap">
-        <img id="lightboxImg" class="lightbox-img" src="" alt="Foto ampliada">
+        <img id="lightboxImg" class="lightbox-img" src="" alt="Ampliada">
       </div>
       <div class="lightbox-actions">
         <button class="lightbox-btn" id="zoomOutBtn">− Reducir</button>
@@ -252,13 +249,12 @@ function abrirLightbox(src) {
 
   if (downloadBtn) {
     downloadBtn.href = src;
-    downloadBtn.download = `boda_recuerdo_${Date.now()}.jpg`;
+    downloadBtn.download = `boda_${Date.now()}.jpg`;
   }
 
   lightbox.classList.add("show");
   document.body.style.overflow = "hidden";
 
-  // Congelamos temporalmente el carrusel 3D para centrar la atención del usuario
   if (sliderInterval) clearInterval(sliderInterval);
 }
 
@@ -269,14 +265,12 @@ function cerrarLightbox() {
   lightbox.classList.remove("show");
   document.body.style.overflow = "";
 
-  // Reanudamos los ciclos de giro automático
   inicializarSliderAutomatico();
 }
 
 function cambiarZoom(valor) {
   const img = document.getElementById("lightboxImg");
   if (!img) return;
-
   lightboxZoom = Math.min(3, Math.max(0.5, lightboxZoom + valor));
   img.style.transform = `scale(${lightboxZoom})`;
 }
@@ -284,16 +278,13 @@ function cambiarZoom(valor) {
 function resetZoom() {
   const img = document.getElementById("lightboxImg");
   if (!img) return;
-
   lightboxZoom = 1;
   img.style.transform = `scale(${lightboxZoom})`;
 }
 
-
 // ==========================================================================
 // 5. CUENTA ATRÁS (COUNTDOWN)
 // ==========================================================================
-
 function updateCountdown() {
   const countdown = document.getElementById("countdown");
   if (!countdown) return;
@@ -314,26 +305,9 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-
 // ==========================================================================
-// 6. MENÚ DE NAVEGACIÓN MÓVIL RESPONSIVE
+// 6. FORMULARIO RSVP (JSONP)
 // ==========================================================================
-
-const menuBtn = document.getElementById("menuBtn");
-const navLinks = document.getElementById("navLinks");
-
-if (menuBtn && navLinks) {
-  menuBtn.addEventListener("click", () => navLinks.classList.toggle("show"));
-  document.querySelectorAll(".nav-links a").forEach(link => {
-    link.addEventListener("click", () => navLinks.classList.remove("show"));
-  });
-}
-
-
-// ==========================================================================
-// 7. FORMULARIO RSVP (CONFIRMACIÓN MEDIANTE JSONP INTERACTIVO)
-// ==========================================================================
-
 const form = document.getElementById("rsvpForm");
 const asisteSelect = document.getElementById("asiste");
 const extraFields = document.getElementById("extraFields");
@@ -381,32 +355,22 @@ if (form) {
     };
 
     if (!payload.nombre || !payload.apellidos || !payload.asiste) {
-      showMessage("Por favor, completa nombre, apellidos y asistencia.", "error");
-      return;
-    }
-
-    if (payload.asiste === "Sí" && !payload.autobus) {
-      showMessage("Indica si necesitas autobús.", "error");
+      showMessage("Por favor, completa los campos requeridos.", "error");
       return;
     }
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Enviando...";
-    showMessage("", "");
 
     try {
       const response = await enviarConfirmacionJSONP(payload);
-
-      if (!response.ok) {
-        throw new Error(response.error || "No se ha podido guardar la confirmación.");
-      }
+      if (!response.ok) throw new Error();
 
       showMessage("¡Muchas gracias! Hemos recibido tu confirmación.", "success");
       form.reset();
       toggleExtraFields();
-
     } catch (error) {
-      showMessage("No se ha podido enviar. Inténtalo de nuevo en unos segundos.", "error");
+      showMessage("No se ha podido enviar. Inténtalo de nuevo.", "error");
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = "Enviar confirmación";
@@ -432,22 +396,19 @@ function enviarConfirmacionJSONP(payload) {
     });
 
     script.src = window.RSVP_ENDPOINT + "?" + params.toString();
-
-    script.onerror = function() {
+    script.onerror = () => {
       delete window[callbackName];
       script.remove();
-      reject(new Error("Error conectando con Google Sheets."));
+      reject();
     };
 
     document.body.appendChild(script);
   });
 }
 
-
 // ==========================================================================
-// 8. CONTROLADOR DE AUDIO (MÚSICA DE FONDO CON PLAYLIST SUCESIVA)
+// 7. REPRODUCTOR DE MÚSICA
 // ==========================================================================
-
 const musicBtn = document.getElementById("musicBtn");
 const playlist = [
   "asset/music/song.mp3?v=3",
@@ -456,71 +417,45 @@ const playlist = [
   "asset/music/song4.mp3?v=3"
 ];
 let currentTrack = 0;
-
 const bgMusic = new Audio();
 bgMusic.volume = 0.5;
 bgMusic.src = playlist[currentTrack];
 
 function actualizarBotonVisual(reproduciendo) {
   if (!musicBtn) return;
-  if (reproduciendo) {
-    musicBtn.classList.add("playing");
-    musicBtn.textContent = "❚❚"; 
-  } else {
-    musicBtn.classList.remove("playing");
-    musicBtn.textContent = "♫";   
-  }
+  musicBtn.textContent = reproduciendo ? "❚❚" : "♫";
 }
 
 function arrancarMusicaEnInteraccion() {
-  removerEscuchadoresGlobales();
-  if (bgMusic.paused) {
-    bgMusic.play()
-      .then(() => actualizarBotonVisual(true))
-      .catch((err) => console.log("El navegador bloqueó el audio:", err));
-  }
-}
-
-function removerEscuchadoresGlobales() {
   document.removeEventListener("click", arrancarMusicaEnInteraccion);
   document.removeEventListener("touchstart", arrancarMusicaEnInteraccion);
+  if (bgMusic.paused) {
+    bgMusic.play().then(() => actualizarBotonVisual(true)).catch(() => {});
+  }
 }
 
 window.addEventListener("load", () => {
   bgMusic.load();
-  bgMusic.play()
-    .then(() => actualizarBotonVisual(true))
-    .catch(() => {
-      document.addEventListener("click", arrancarMusicaEnInteraccion);
-      document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
-    });
+  bgMusic.play().then(() => actualizarBotonVisual(true)).catch(() => {
+    document.addEventListener("click", arrancarMusicaEnInteraccion);
+    document.addEventListener("touchstart", arrancarMusicaEnInteraccion, { passive: true });
+  });
 });
 
 bgMusic.addEventListener("ended", () => {
   currentTrack = (currentTrack + 1) % playlist.length;
   bgMusic.src = playlist[currentTrack];
   bgMusic.load();
-  bgMusic.play()
-    .then(() => actualizarBotonVisual(true))
-    .catch(err => console.log("Error al saltar de pista:", err));
+  bgMusic.play().then(() => actualizarBotonVisual(true));
 });
 
 if (musicBtn) {
-  const controlarMusicaManual = (e) => {
-    e.preventDefault();
-    e.stopPropagation(); 
-    removerEscuchadoresGlobales(); 
-
+  musicBtn.addEventListener("click", () => {
     if (bgMusic.paused) {
-      bgMusic.play()
-        .then(() => actualizarBotonVisual(true))
-        .catch(err => console.error("Error al dar Play manual:", err));
+      bgMusic.play().then(() => actualizarBotonVisual(true));
     } else {
       bgMusic.pause();
       actualizarBotonVisual(false);
     }
-  };
-
-  musicBtn.addEventListener("click", controlarMusicaManual);
-  musicBtn.addEventListener("touchstart", controlarMusicaManual, { passive: false });
+  });
 }

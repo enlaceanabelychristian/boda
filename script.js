@@ -11,6 +11,7 @@ function crearLightboxFotos() {
   lightbox.id = "photoLightbox";
   lightbox.className = "photo-lightbox";
 
+  // Se añade el botón de descarga (#downloadBtn) en la barra de acciones
   lightbox.innerHTML = `
     <div class="lightbox-inner">
       <button class="lightbox-close" id="lightboxClose" aria-label="Cerrar">×</button>
@@ -23,6 +24,7 @@ function crearLightboxFotos() {
         <button class="lightbox-btn" id="zoomOutBtn">− Reducir</button>
         <button class="lightbox-btn" id="zoomResetBtn">Tamaño normal</button>
         <button class="lightbox-btn" id="zoomInBtn">+ Ampliar</button>
+        <button class="lightbox-btn" id="downloadBtn">📥 Descargar</button>
       </div>
     </div>
   `;
@@ -34,9 +36,18 @@ function crearLightboxFotos() {
     if (e.target.id === "photoLightbox") cerrarLightbox();
   });
 
+  // Escuchadores para ampliar, desampliar y resetear el zoom
   document.getElementById("zoomInBtn").addEventListener("click", () => cambiarZoom(0.25));
   document.getElementById("zoomOutBtn").addEventListener("click", () => cambiarZoom(-0.25));
   document.getElementById("zoomResetBtn").addEventListener("click", () => resetZoom());
+  
+  // Escuchador para el nuevo botón de descarga
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+    const img = document.getElementById("lightboxImg");
+    if (img && img.src) {
+      descargarFoto(img.src);
+    }
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") cerrarLightbox();
@@ -69,6 +80,7 @@ function cambiarZoom(valor) {
   const img = document.getElementById("lightboxImg");
   if (!img) return;
 
+  // Limita el zoom entre 0.5x (desampliar) y 3x (ampliar)
   lightboxZoom = Math.min(3, Math.max(0.5, lightboxZoom + valor));
   img.style.transform = `scale(${lightboxZoom})`;
 }
@@ -79,6 +91,39 @@ function resetZoom() {
 
   lightboxZoom = 1;
   img.style.transform = `scale(${lightboxZoom})`;
+}
+
+// Nueva función para gestionar la descarga segura de la fotografía
+async function descargarFoto(url) {
+  const downloadBtn = document.getElementById("downloadBtn");
+  const originalText = downloadBtn.textContent;
+
+  try {
+    downloadBtn.textContent = "Descargando...";
+    downloadBtn.disabled = true;
+
+    // Convertimos la imagen a Blob para forzar la descarga en el navegador sin que abra una pestaña nueva
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = `foto-boda-${Date.now()}.jpg`; // Nombre por defecto con timestamp
+    document.body.appendChild(a);
+    a.click();
+
+    // Limpieza del DOM y de la memoria
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error("Error al descargar la imagen:", error);
+    // Alternativa (Fallback) si las políticas de CORS de Cloudinary bloquean la petición directa de fetch
+    window.open(url, "_blank");
+  } finally {
+    downloadBtn.textContent = originalText;
+    downloadBtn.disabled = false;
+  }
 }
 
 async function cargarFotosCarruselBoda() {

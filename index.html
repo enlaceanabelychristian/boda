@@ -1,371 +1,191 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
   <meta charset="UTF-8" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Anabel & Christian</title>
-
   <meta name="description" content="Web de la boda de Anabel y Christian" />
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
-
+  
   <link rel="stylesheet" href="styles.css" />
-
 </head>
 
-
-
 <body>
-
 <header class="hero" id="inicio">
-
   <nav class="nav">
-
     <div class="brand">A & C</div>
-
     <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
-
     <div class="nav-links" id="navLinks">
-
       <a href="#inicio">Inicio</a>
-
       <a href="#galeria">Fotos</a>
-
       <a href="#evento">Evento</a>
-
       <a href="#subir-foto">Subir Foto</a>
-
       <a href="#confirmar">Confirmar</a>
-
     </div>
-
   </nav>
 
-
-
   <section class="hero-content">
-
     <p class="hero-overline">Nuestra boda</p>
-
     <h1>Anabel & Christian</h1>
-
     <p class="date">Muy pronto celebraremos nuestro gran día</p>
 
-
-
     <div class="signature-countdown" id="countdown">
-
       <div><strong id="days">00</strong><span>días</span></div>
-
       <div><strong id="hours">00</strong><span>horas</span></div>
-
       <div><strong id="minutes">00</strong><span>minutos</span></div>
-
       <div><strong id="seconds">00</strong><span>segundos</span></div>
-
     </div>
-
-
 
     <a class="btn" href="#confirmar">Confirmar asistencia</a>
-
   </section>
-
 </header>
 
-
-
 <main>
-
   <section class="section intro">
-
     <p class="overline">Con mucho amor</p>
-
     <h2>Queremos compartir este día contigo</h2>
-
     <p>
-
       Hay momentos que se viven una sola vez, pero se recuerdan para siempre.
-
       Nos hace muchísima ilusión celebrar este día rodeados de nuestra familia y amigos.
-
     </p>
-
   </section>
-
-
 
   <section id="galeria" class="section gallery-section">
-
     <p class="overline">Recuerdos</p>
-
     <h2>Fotos del Momento</h2>
-
     <p class="gallery-text">Espacios preparados para añadir vuestras fotos favoritas.</p>
 
-
-
     <div class="event-carousel" id="eventCarousel">
-
       <div class="carousel-track" id="carouselTrack">
-
         <div class="carousel-placeholder">
-
           <span>📸</span>
-
           <p>Aquí aparecerán las fotos que suban los invitados</p>
-
         </div>
-
       </div>
-
     </div>
-
   </section>
-
-
 
   <section id="evento" class="section cards">
-
     <article class="card">
-
       <img src="asset/fotos/iglesia.png" alt="Ceremonia" class="card-img">
-
       <h3>Ceremonia</h3>
-
       <p><strong>Hora:</strong> 11:30</p>
-
       <p><strong>Lugar:</strong> Iglesia Ntra. Sra. del Carmen</p>
-
-      <p> Gibraleón</p>
-
+      <p>Gibraleón</p>
     </article>
 
-
-
     <article class="card">
-
       <img src="asset/fotos/hacienda.png" alt="Celebración" class="card-img">
-
       <h3>Celebración</h3>
-
       <p><strong>Hora:</strong> 13:00</p>
-
       <p><strong>Lugar:</strong> Hacienda Ballemari</p>
-
     </article>
-
-
 
     <article class="card">
-
       <img src="asset/fotos/bus.png" alt="Horarios" class="card-img">
-
       <h3>Horarios</h3>
-
       <p>Pnte de rellenar</p>
-
     </article>
-
   </section>
 
-
-
   <section id="subir-foto" class="section upload-section">
-
     <div class="upload-card">
-
       <p class="overline">Fotos del evento</p>
-
       <h2>Sube tu recuerdo</h2>
-
       <p class="upload-intro">
-
         Comparte con nosotros las fotos que hagas durante la boda.
-
       </p>
 
-
-
       <form id="uploadPhotoForm" class="upload-form">
-
         <label class="upload-box">
-
           <span>📸</span>
-
           <strong>Seleccionar foto</strong>
-
           <small>JPG, PNG o WEBP</small>
-
           <input type="file" id="eventPhoto" accept="image/*" required>
-
         </label>
-
-
 
         <img id="photoPreview" class="photo-preview hidden" alt="Vista previa">
 
-
-
         <button type="submit" class="btn submit-btn" id="uploadBtn">
-
           Subir fotografía
-
         </button>
 
-
-
         <p id="uploadMessage" class="form-message"></p>
-
       </form>
-
     </div>
-
   </section>
-
-
 
   <section id="confirmar" class="section rsvp">
-
     <div class="rsvp-card">
-
       <p class="overline">Confirmación</p>
-
       <h2>Confirma tu asistencia</h2>
-
       <p class="rsvp-intro">Nos ayudará muchísimo saber si podremos contar contigo en nuestro día.</p>
 
-
-
       <form id="rsvpForm" class="wedding-form">
-
         <div class="form-grid">
-
           <label>
-
             Nombre *
-
             <input type="text" name="nombre" required placeholder="Tu nombre">
-
           </label>
-
-
 
           <label>
-
             Apellidos *
-
             <input type="text" name="apellidos" required placeholder="Tus apellidos">
-
           </label>
-
-
 
           <label class="full">
-
             ¿Asistirás? *
-
             <select name="asiste" id="asiste" required>
-
               <option value="">Selecciona una opción</option>
-
               <option value="Sí">Sí, asistiré</option>
-
               <option value="No">No podré asistir</option>
-
             </select>
-
           </label>
 
-
-
           <div id="extraFields" class="extra-fields full">
-
             <label class="full">
-
               Teléfono *
-
               <input type="tel" name="telefono" placeholder="Tu número de teléfono (Ej: 600123456)">
-
             </label>
 
-
-
             <label class="full">
-
               ¿Necesitas autobús? *
-
               <select name="autobus" id="autobus">
-
                 <option value="">Selecciona una opción</option>
-
                 <option value="Sí">Sí</option>
-
                 <option value="No">No</option>
-
               </select>
-
             </label>
-
-
 
             <label class="full">
-
               Alergias o intolerancias
-
               <textarea name="alergias" rows="4" placeholder="Indica alergias, intolerancias o escribe Ninguna"></textarea>
-
             </label>
-
           </div>
-
         </div>
 
-
-
         <button type="submit" class="btn submit-btn" id="submitBtn">Enviar confirmación</button>
-
         <p id="formMessage" class="form-message"></p>
-
       </form>
-
     </div>
-
   </section>
-
 </main>
 
-
-
 <footer>
-
   <p>Anabel & Christian</p>
-
 </footer>
 
-
-
-<script>window.RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxbDP-UtQ1Q5a4PODeiXlZ8AJRgWaV4QelvdMZoC8sWLbzbPHVZffE5zZTZIwhiPBg/exec";</script>
-
+<script>
+  window.RSVP_ENDPOINT = "https://script.google.com/macros/s/AKfycbxbDP-UtQ1Q5a4PODeiXlZ8AJRgWaV4QelvdMZoC8sWLbzbPHVZffE5zZTZIwhiPBg/exec";
+</script>
   
-
 <button id="musicBtn" class="music-btn" aria-label="Activar o desactivar música">
-
   ♫
-
 </button>
 
 <script src="script.js"></script>
-
 </body>
-
 </html>

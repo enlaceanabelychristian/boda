@@ -1669,3 +1669,21 @@ footer p {
     height: 190px;
   }
 }
+
+}
+.date-short {
+font-family: "Parisienne", cursive;
+color: #ffffff;
+text-transform: uppercase;
+letter-spacing: 5px;
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 18px;
+display: block;
+-webkit-text-stroke: 0.25px rgba(199, 161, 90, 0.85);
+text-shadow:
+    0 1px 3px rgba(199, 161, 90, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+}
+}/*  */
+   

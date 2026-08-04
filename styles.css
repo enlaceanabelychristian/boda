@@ -608,6 +608,123 @@ h2 {
   fill: currentColor;
 }
 
+/* ========================================================================== 
+
+   HORARIOS DE AUTOBUSES
+
+   ========================================================================== */
+
+.bus-schedule {
+  width: calc(100% - 40px);
+
+  margin: 24px auto 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--borde);
+
+  border-radius: 22px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 250, 248, 0.98),
+    rgba(248, 238, 238, 0.72)
+  );
+
+  box-shadow: 0 15px 35px rgba(151, 104, 93, 0.1);
+}
+
+.bus-route {
+  position: relative;
+
+  padding: 17px 18px;
+}
+
+.bus-route + .bus-route {
+  border-top: 1px solid var(--borde);
+}
+
+.bus-schedule p {
+  padding: 0;
+}
+
+.bus-route-label {
+  margin-bottom: 5px;
+
+  color: var(--dorado);
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  line-height: 1.35;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+.bus-route-time {
+  margin-bottom: 5px;
+
+  color: var(--texto);
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  line-height: 1.35;
+}
+
+.bus-route-places {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px 9px;
+
+  color: var(--texto);
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  line-height: 1.45;
+}
+
+.bus-route-places span,
+.bus-route .bus-arrow {
+  display: inline;
+
+  margin: 0;
+
+  font-size: inherit;
+}
+
+.bus-route .bus-arrow {
+  color: var(--dorado);
+
+  font-size: 18px;
+
+  line-height: 1;
+}
+
+.bus-route-detail {
+  max-width: 270px;
+
+  margin: 6px auto 0;
+
+  color: var(--gris);
+
+  font-size: 12px;
+
+  line-height: 1.55;
+}
+
 /* ==========================================================================
 
    5. GALLERY
@@ -718,7 +835,7 @@ h2 {
 }
 
 .rsvp-card:before {
-  content: "❦";
+  content: "â¦";
 
   position: absolute;
 
@@ -734,7 +851,7 @@ h2 {
 }
 
 .rsvp-card:after {
-  content: "❦";
+  content: "â¦";
 
   position: absolute;
 
@@ -980,6 +1097,18 @@ footer p {
   .rsvp-card {
     border-radius: 32px;
   }
+
+  .bus-schedule {
+    width: calc(100% - 32px);
+  }
+
+  .bus-route {
+    padding: 18px 16px;
+  }
+
+  .bus-route-time {
+    font-size: 21px;
+  }
 }
 
 /* ==========================================================================
@@ -1023,7 +1152,7 @@ footer p {
 }
 
 .music-btn::after {
-  content: "Música";
+  content: "MÃºsica";
 
   position: absolute;
 
@@ -1050,7 +1179,7 @@ footer p {
 
 /* ==========================================================================
 
-   10. SUBIDA DE FOTOS EVENTO (DEGRADADO Y FOTO DETRÁS DE LA TARJETA)
+   10. SUBIDA DE FOTOS EVENTO (DEGRADADO Y FOTO DETRÃS DE LA TARJETA)
 
    ========================================================================== */
 
@@ -1466,7 +1595,7 @@ footer p {
   }
 }
 
-/* ─── AQUÍ ESTÁ TU NUEVO COLOFÓN PARA LAS FLECHAS DEL LIGHTBOX ─── */
+/* â”€â”€â”€ AQUÃ ESTÃ TU NUEVO COLOFÃ“N PARA LAS FLECHAS DEL LIGHTBOX â”€â”€â”€ */
 
 .lightbox-arrow {
   position: absolute;
@@ -1524,7 +1653,7 @@ footer p {
 }
 
 @media (max-width: 1260px) {
-  /* Si la pantalla es algo estrecha, metemos las flechas un pelín dentro para que no se salgan del monitor */
+  /* Si la pantalla es algo estrecha, metemos las flechas un pelÃ­n dentro para que no se salgan del monitor */
 
   .lightbox-arrow.prev {
     left: 15px;
